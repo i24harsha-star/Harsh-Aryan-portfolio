@@ -1,26 +1,182 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   Design tokens
+
+   Deliberately two colours. Emphasis comes from scale, spacing and motion —
+   never from hue. Adding an accent here would undo the restraint that makes
+   the layout read as expensive.
+--------------------------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0b0b0b;
+  --bg-raised: #121212;
+  --fg: #ffffff;
+  --fg-muted: rgba(255, 255, 255, 0.56);
+  --fg-faint: rgba(255, 255, 255, 0.34);
+  --line: rgba(255, 255, 255, 0.14);
+  --line-soft: rgba(255, 255, 255, 0.07);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --maxw: 1680px;
+  /* Reserved column for the fixed chapter index, so content never runs under it. */
+  --nav-inset: 0px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (min-width: 1024px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --nav-inset: 9rem;
   }
 }
 
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-raised: var(--bg-raised);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-line: var(--line);
+  --font-sans: var(--font-inter);
+}
+
+* {
+  min-width: 0;
+}
+
+html {
+  /* Lenis drives scrolling; native smooth behaviour would fight it. */
+  scroll-behavior: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+/* ---------------------------------------------------------------------------
+   Type
+--------------------------------------------------------------------------- */
+
+/* The hairline display face. Weight 100 only holds up at very large sizes —
+   never drop this below ~3rem or it disappears on lower-contrast screens. */
+.display {
+  font-weight: 100;
+  font-size: clamp(2.75rem, 8.2vw, 9.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.display-sm {
+  font-weight: 100;
+  font-size: clamp(2rem, 4.6vw, 4.75rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  font-size: clamp(0.625rem, 0.78vw, 0.75rem);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.lede {
+  font-size: clamp(1rem, 1.35vw, 1.375rem);
+  line-height: 1.55;
+  font-weight: 200;
+  color: var(--fg-muted);
+}
+
+.body {
+  font-size: clamp(0.9375rem, 1.02vw, 1.0625rem);
+  line-height: 1.68;
+  color: var(--fg-muted);
+}
+
+.mono {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ---------------------------------------------------------------------------
+   Layout
+--------------------------------------------------------------------------- */
+.shell {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-left: calc(var(--gutter) + var(--nav-inset));
+  padding-right: var(--gutter);
+}
+
+/* Full-bleed strips still need to clear the chapter index on the left. */
+.bleed {
+  padding-left: calc(var(--gutter) + var(--nav-inset));
+}
+
+.chapter {
+  position: relative;
+  padding-block: clamp(6rem, 14vh, 12rem);
+}
+
+.rule {
+  height: 1px;
+  background: var(--line);
+  border: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Motion primitives
+
+   Elements start hidden and are revealed by GSAP. If JavaScript never runs, the
+   .no-js fallback below makes everything visible rather than leaving a blank
+   page — a portfolio that renders nothing is worse than one without animation.
+--------------------------------------------------------------------------- */
+[data-reveal],
+[data-reveal-line] > * {
+  will-change: transform, opacity;
+}
+
+.no-js [data-reveal],
+.no-js [data-reveal-line] > * {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.line-mask {
+  display: block;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Focus — visible for keyboard users, invisible for pointer users
+--------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 1px solid var(--fg);
+  outline-offset: 3px;
 }
