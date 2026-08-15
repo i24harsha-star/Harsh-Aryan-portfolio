@@ -2,32 +2,25 @@
 
 import Image from "next/image";
 import ChapterHead from "./ChapterHead";
+import ScrollStack, { ScrollStackItem } from "./reactbits/ScrollStack";
 import { useGsapContext, gsap, EASE } from "@/lib/motion";
 import { competitions } from "@/data/content";
 
 export default function Competitions() {
   const scope = useGsapContext(({ self }) => {
+    // The cards themselves are driven by ScrollStack, which owns their
+    // `transform` and `filter` outright — animating the same card here would
+    // mean two writers fighting over one property every frame. Only the
+    // contents get a reveal, and only on the way in.
     self.querySelectorAll<HTMLElement>(".case-row").forEach((row) => {
-      const frame = row.querySelector(".case-frame");
-      const body = row.querySelectorAll(".case-body > *");
-
-      gsap
-        .timeline({ scrollTrigger: { trigger: row, start: "top 76%" } })
-        .from(frame, { clipPath: "inset(0% 0% 100% 0%)", duration: 1.35, ease: EASE })
-        .from(body, { y: 26, opacity: 0, duration: 0.95, ease: EASE, stagger: 0.07 }, "-=1.0");
-
-      const img = row.querySelector(".case-img");
-      if (img) {
-        gsap.fromTo(
-          img,
-          { scale: 1.16, yPercent: -5 },
-          {
-            yPercent: 5,
-            ease: "none",
-            scrollTrigger: { trigger: row, start: "top bottom", end: "bottom top", scrub: 0.5 },
-          }
-        );
-      }
+      gsap.from(row.querySelectorAll(".case-body > *"), {
+        y: 22,
+        opacity: 0,
+        duration: 0.9,
+        ease: EASE,
+        stagger: 0.06,
+        scrollTrigger: { trigger: row, start: "top 88%" },
+      });
     });
 
     // Photo strip drifts sideways as the page scrolls past it.
@@ -64,13 +57,16 @@ export default function Competitions() {
           standfirst={competitions.standfirst}
         />
 
-        <div className="mt-20 space-y-24 lg:mt-28 lg:space-y-32">
-          {competitions.items.map((item, i) => (
-            <article
+        {/* The five cases pin one behind another and stack, each settling a
+            little smaller and softer than the one in front. */}
+        <ScrollStack itemDistance={110} itemStackDistance={22} baseScale={0.88}>
+          {competitions.items.map((item) => (
+            <ScrollStackItem
               key={item.slug}
-              className={`case-row grid items-center gap-8 lg:grid-cols-12 lg:gap-14 ${
-                i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
-              }`}
+              // Solid background rather than backdrop-blur: each card already
+              // carries a filter: blur() for stack depth, and compositing five
+              // backdrop-filters underneath that drops frames while scrolling.
+              className="case-row grid items-center gap-8 border border-[var(--line-soft)] bg-[#101010] p-6 lg:grid-cols-12 lg:gap-14 lg:p-10"
             >
               <div className="lg:col-span-7">
                 <a
@@ -129,9 +125,9 @@ export default function Competitions() {
                   )}
                 </div>
               </div>
-            </article>
+            </ScrollStackItem>
           ))}
-        </div>
+        </ScrollStack>
       </div>
 
       {/* Full-bleed photo strip */}

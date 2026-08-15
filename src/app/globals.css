@@ -10,25 +10,23 @@
 :root {
   --bg: #0b0b0b;
   --bg-raised: #121212;
-  --fg: #ffffff;
-  --fg-muted: rgba(255, 255, 255, 0.56);
-  --fg-faint: rgba(255, 255, 255, 0.34);
-  --line: rgba(255, 255, 255, 0.14);
-  --line-soft: rgba(255, 255, 255, 0.07);
+  /* Soft concrete rather than pure white — pure #fff glares against near-black. */
+  --fg: #f1f1f1;
+  --fg-muted: rgba(241, 241, 241, 0.56);
+  --fg-faint: rgba(241, 241, 241, 0.34);
+  --line: rgba(241, 241, 241, 0.14);
+  --line-soft: rgba(241, 241, 241, 0.07);
 
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* The signature curve: easeInOutQuint. Slow to leave, fast through the middle,
+     long settle. An ease-out alone reads snappy; this reads deliberate, and that
+     difference is most of the "cinematic" feeling. */
+  --ease: cubic-bezier(0.83, 0, 0.17, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   --gutter: clamp(1.25rem, 4vw, 4.5rem);
   --maxw: 1680px;
-  /* Reserved column for the fixed chapter index, so content never runs under it. */
-  --nav-inset: 0px;
-}
-
-@media (min-width: 1024px) {
-  :root {
-    --nav-inset: 9rem;
-  }
+  /* Clearance for the fixed chapter index along the bottom edge. */
+  --nav-h: 4.5rem;
 }
 
 @theme inline {
@@ -41,7 +39,11 @@
   --font-sans: var(--font-inter);
 }
 
-* {
+/* Flex and grid children default to min-width:auto, which lets long text push a
+   track wider than its container. Applied to layout children only — as a global
+   `*` rule it silently overrode every min-w-* utility on the site. */
+.shell > *,
+[class*="grid-cols"] > * {
   min-width: 0;
 }
 
@@ -120,13 +122,52 @@ body {
   width: 100%;
   max-width: var(--maxw);
   margin-inline: auto;
-  padding-left: calc(var(--gutter) + var(--nav-inset));
-  padding-right: var(--gutter);
+  padding-inline: var(--gutter);
 }
 
-/* Full-bleed strips still need to clear the chapter index on the left. */
 .bleed {
-  padding-left: calc(var(--gutter) + var(--nav-inset));
+  padding-left: var(--gutter);
+}
+
+/* ---------------------------------------------------------------------------
+   Sticky stage — the cinematic primitive
+
+   A tall outer wrapper provides scroll distance; the inner stage pins to the
+   viewport and its layers are scrubbed against that distance. The viewport
+   holds still while the content moves through states, which is what makes one
+   section appear to morph into the next rather than slide past.
+--------------------------------------------------------------------------- */
+.stage-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* Still frame for reduced motion: the opening keeps its question, the portrait
+   sits back as atmosphere, and the second-state name is dropped (the header
+   already carries it) rather than left clipped off the bottom. */
+[data-static="true"] .hero-portrait {
+  opacity: 0.28 !important;
+  transform: scale(1.04);
+}
+[data-static="true"] .hero-name-line {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Chapter index (bottom)
+--------------------------------------------------------------------------- */
+
+/* Active marker turns from a filled square into a ring. A radial mask punches
+   the centre out, so one element covers both states and can tween between them. */
+.chapter-decor {
+  transition: opacity 0.6s var(--ease), mask 0.6s var(--ease);
+}
+.chapter-item[data-active="true"] .chapter-decor {
+  opacity: 1;
+  mask: radial-gradient(0.22rem, transparent 99%, #000 100%);
+  -webkit-mask: radial-gradient(0.22rem, transparent 99%, #000 100%);
 }
 
 .chapter {

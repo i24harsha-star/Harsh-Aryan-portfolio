@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import ChapterHead from "./ChapterHead";
+import ScrollVelocity from "./reactbits/ScrollVelocity";
 import { useGsapContext, gsap, EASE, splitWords } from "@/lib/motion";
 import { about } from "@/data/content";
 
@@ -42,16 +43,6 @@ export default function About() {
       });
     }
 
-    // Institution marks scroll horizontally, forever.
-    const track = self.querySelector<HTMLElement>(".marks-track");
-    if (track) {
-      gsap.to(track, {
-        xPercent: -50,
-        duration: 34,
-        ease: "none",
-        repeat: -1,
-      });
-    }
   });
 
   return (
@@ -98,18 +89,16 @@ export default function About() {
         </div>
       </div>
 
-      {/* Full-bleed marquee of institutions */}
-      <div className="bleed mt-20 overflow-hidden border-y border-[var(--line-soft)] py-6 lg:mt-28">
-        <div className="marks-track flex w-max gap-14 pr-14">
-          {[...about.marks, ...about.marks].map((m, i) => (
-            <span
-              key={`${m}-${i}`}
-              className="whitespace-nowrap text-[0.6875rem] tracking-[0.2em] uppercase text-fg-faint"
-            >
-              {m}
-            </span>
-          ))}
-        </div>
+      {/* Full-bleed marquee of institutions.
+          Velocity-reactive: it drifts on its own, accelerates with the scroll,
+          and reverses when you scroll back up. */}
+      <div className="mt-20 border-y border-[var(--line-soft)] py-6 lg:mt-28">
+        <ScrollVelocity
+          texts={[about.marks.join("　·　")]}
+          velocity={26}
+          numCopies={4}
+          className="whitespace-nowrap pr-14 text-[0.6875rem] tracking-[0.2em] uppercase text-fg-faint"
+        />
       </div>
     </section>
   );

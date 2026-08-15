@@ -4,32 +4,27 @@ import { useEffect, useRef, useState } from "react";
 import { chapters } from "@/data/content";
 
 /**
- * Fixed chapter index with a progress line, mirroring the reference site's
- * navigation. Appears once the hero has been scrolled past, so the opening
- * screen stays uncluttered.
+ * Chapter index along the bottom edge, following nabilissa.com's construction:
  *
- * Built on IntersectionObserver and a plain scroll listener rather than
- * ScrollTrigger: this is navigation, so it has to keep working for readers with
- * reduced motion, where the GSAP layer is never started.
+ *   - one flex row across the full width, fixed to the bottom
+ *   - inactive items hold a fixed min-width; the ACTIVE item flex-grows to take
+ *     the remaining space, so the row rebalances as you move through the story
+ *   - each item carries its own hairline with a progress fill that runs 0→100%
+ *     across that chapter only
+ *   - a small square marker sits at the right of each item and becomes a ring
+ *     when active (see .chapter-decor in globals.css)
+ *   - hovering slides a light panel up from below and inverts the label
+ *
+ * Built on IntersectionObserver and a passive scroll listener rather than
+ * ScrollTrigger, so navigation still works for readers with reduced motion,
+ * where the GSAP layer never starts.
  */
 export default function ChapterNav() {
   const [active, setActive] = useState<string>(chapters[0].id);
-  const [visible, setVisible] = useState(false);
-  const progress = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const fills = useRef<Record<string, HTMLSpanElement | null>>({});
 
   useEffect(() => {
-    const hero = document.querySelector("main > section");
-
-    // Reveal the index once the hero is mostly out of the way.
-    const heroObserver = hero
-      ? new IntersectionObserver(
-          ([entry]) => setVisible(entry.intersectionRatio < 0.35),
-          { threshold: [0, 0.35, 1] }
-        )
-      : null;
-    if (hero && heroObserver) heroObserver.observe(hero);
-
-    // Track which chapter owns the middle of the viewport.
     const sectionObserver = new IntersectionObserver(
       (entries) => {
         const hit = entries
@@ -49,18 +44,29 @@ export default function ChapterNav() {
       if (frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        const ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-        if (progress.current) progress.current.style.transform = `scaleY(${ratio})`;
+        const y = window.scrollY;
+        const vh = window.innerHeight;
+        for (const c of chapters) {
+          const el = document.getElementById(c.id);
+          const fill = fills.current[c.id];
+          if (!el || !fill) continue;
+          const top = el.getBoundingClientRect().top + y;
+          // Measure against the section's own span so each line fills exactly
+          // while its chapter is on screen.
+          const span = Math.max(el.offsetHeight - vh * 0.45, 1);
+          const p = Math.min(1, Math.max(0, (y - top + vh * 0.55) / span));
+          fill.style.width = `${p * 100}%`;
+        }
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     onScroll();
 
     return () => {
-      heroObserver?.disconnect();
       sectionObserver.disconnect();
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
@@ -68,48 +74,71 @@ export default function ChapterNav() {
   return (
     <nav
       aria-label="Chapters"
-      className={`pointer-events-none fixed left-0 top-1/2 z-40 hidden -translate-y-1/2 pl-[max(1.25rem,2.2vw)] transition-opacity duration-700 lg:block ${
-        visible ? "opacity-100" : "opacity-0"
-      }`}
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-[70] flex gap-2 px-[var(--gutter)] pb-5 lg:gap-5"
     >
-      <div className="relative flex gap-4">
-        <div className="relative w-px shrink-0 bg-[var(--line-soft)]">
-          <div
-            ref={progress}
-            className="absolute inset-x-0 top-0 h-full origin-top scale-y-0 bg-white/70"
-          />
-        </div>
+      {chapters.map((c, i) => {
+        const on = active === c.id;
+        const isLast = i === chapters.length - 1;
+        return (
+          <a
+            key={c.id}
+            href={`#${c.id}`}
+            data-active={on}
+            onMouseEnter={() => setHovered(c.id)}
+            onMouseLeave={() => setHovered(null)}
+            aria-current={on ? "true" : undefined}
+            /* Active item grows into the leftover space; inactive items hold a
+               fixed width — wide enough for a full label on desktop, just the
+               numeral on a phone. Both must be set explicitly: a `flex-1` on an
+               item that also has `grow-0` collapses it to zero width. */
+            className={`chapter-item pointer-events-auto relative h-[1.45rem] overflow-hidden py-1 transition-[flex-grow] duration-500 ease-[var(--ease)] ${
+              on
+                ? "shrink grow basis-0 min-w-[6rem]"
+                : "shrink-0 grow-0 basis-auto min-w-[2.25rem] lg:min-w-[11.4375rem]"
+            }`}
+          >
+            {/* light panel that slides up on hover */}
+            <span
+              className="absolute inset-0 bg-[var(--fg)] transition-transform duration-[600ms] ease-[var(--ease)]"
+              style={{
+                transform: hovered === c.id ? "translateY(0)" : "translateY(110%)",
+              }}
+              aria-hidden
+            />
 
-        <ul className="pointer-events-auto space-y-3.5">
-          {chapters.map((c) => {
-            const on = active === c.id;
-            return (
-              <li key={c.id}>
-                <a
-                  href={`#${c.id}`}
-                  className="group flex items-baseline gap-2.5 text-[0.5625rem] tracking-[0.2em] uppercase"
-                  aria-current={on ? "true" : undefined}
-                >
-                  <span
-                    className={`mono w-5 transition-colors duration-500 ${
-                      on ? "text-fg" : "text-fg-faint"
-                    }`}
-                  >
-                    {c.numeral}
-                  </span>
-                  <span
-                    className={`transition-colors duration-500 group-hover:text-fg ${
-                      on ? "text-fg" : "text-fg-faint"
-                    }`}
-                  >
-                    {c.label}
-                  </span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+            <span
+              className={`relative z-[2] block text-[0.5625rem] tracking-[0.2em] uppercase transition-[opacity,color] duration-[600ms] ease-[var(--ease)] ${
+                hovered === c.id ? "text-[var(--bg)]" : "text-[var(--fg)]"
+              } ${on || hovered === c.id ? "opacity-100" : "opacity-50"}`}
+            >
+              <span className="lg:hidden">{on ? `Chapter ${c.numeral}` : c.numeral}</span>
+              <span className="hidden lg:inline">Chapter {c.numeral}</span>
+              <span className="hidden xl:inline"> — {c.label}</span>
+            </span>
+
+            {/* square marker; becomes a ring when active */}
+            <span
+              className={`chapter-decor absolute top-1.5 z-[2] hidden size-[0.5625rem] bg-[var(--fg)] opacity-20 lg:block ${
+                isLast ? "left-0" : "right-0"
+              }`}
+              aria-hidden
+            />
+
+            {/* hairline + per-chapter progress fill */}
+            <span
+              className="absolute inset-x-0 bottom-0 h-px bg-[rgba(241,241,241,0.2)]"
+              aria-hidden
+            >
+              <span
+                ref={(el) => {
+                  fills.current[c.id] = el;
+                }}
+                className="absolute left-0 top-0 block h-full w-0 bg-[var(--fg)]"
+              />
+            </span>
+          </a>
+        );
+      })}
     </nav>
   );
 }
