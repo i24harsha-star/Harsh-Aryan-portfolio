@@ -121,7 +121,7 @@ export default function Projects() {
                 </p>
                 <a
                   href={a.doc}
-                  className="mt-7 inline-block border-b border-line pb-1 text-[0.6875rem] tracking-[0.16em] uppercase transition-colors duration-500 hover:border-white"
+                  className="mt-7 inline-block border-b border-line pb-1 text-[0.6875rem] tracking-[0.16em] uppercase transition-colors duration-500 hover:border-[var(--accent)] hover:text-[var(--accent)]"
                 >
                   {a.docLabel}
                 </a>

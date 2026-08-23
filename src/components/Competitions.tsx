@@ -83,8 +83,8 @@ export default function Competitions() {
                     sizes="(max-width: 1024px) 100vw, 58vw"
                     className="case-img object-cover grayscale transition-[filter,transform] duration-[1.2s] ease-[var(--ease)] group-hover:grayscale-0"
                   />
-                  <span className="absolute inset-0 bg-black/25 transition-opacity duration-700 group-hover:opacity-0" />
-                  <span className="absolute bottom-4 right-4 rounded-full border border-white/40 bg-black/45 px-3.5 py-1.5 text-[0.5625rem] tracking-[0.18em] uppercase backdrop-blur-sm">
+                  <span className="absolute inset-0 bg-[var(--bg)]/55 transition-opacity duration-700 group-hover:opacity-0" />
+                  <span className="absolute bottom-4 right-4 rounded-full border border-white/40 bg-black/70 px-3.5 py-1.5 text-[0.5625rem] tracking-[0.18em] uppercase">
                     View deck · {item.pages}pp
                   </span>
                 </a>
@@ -109,7 +109,7 @@ export default function Competitions() {
                     href={item.doc}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="border-b border-line pb-1 text-[0.6875rem] tracking-[0.16em] uppercase transition-colors duration-500 hover:border-white"
+                    className="border-b border-line pb-1 text-[0.6875rem] tracking-[0.16em] uppercase transition-colors duration-500 hover:border-[var(--accent)] hover:text-[var(--accent)]"
                   >
                     Open deck
                   </a>

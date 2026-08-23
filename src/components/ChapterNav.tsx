@@ -127,14 +127,14 @@ export default function ChapterNav() {
 
               {/* hairline + per-chapter progress fill */}
               <span
-                className="absolute inset-x-0 bottom-0 h-px bg-[rgba(241,241,241,0.2)]"
+                className="absolute inset-x-0 bottom-0 h-px bg-[rgba(242,239,234,0.2)]"
                 aria-hidden
               >
                 <span
                   ref={(el) => {
                     fills.current[c.id] = el;
                   }}
-                  className="absolute left-0 top-0 block h-full w-0 bg-[var(--fg)]"
+                  className="absolute left-0 top-0 block h-full w-0 bg-[var(--accent)]"
                 />
               </span>
             </span>

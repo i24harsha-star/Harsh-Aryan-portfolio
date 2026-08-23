@@ -47,7 +47,11 @@ export default function Hero() {
       >
         <div
           data-hero-meta
-          className="text-[0.6875rem] font-medium tracking-[0.22em] uppercase mix-blend-difference"
+          /* No mix-blend-difference: it promotes the fixed header into a blend
+             group composited against the whole page, and over transformed and
+             filtered layers scrolling beneath it that mis-paints — the pale
+             rectangle seen behind Chapter II's heading. */
+          className="text-[0.6875rem] font-medium tracking-[0.22em] uppercase"
         >
           {site.name}
         </div>
@@ -72,8 +76,10 @@ export default function Hero() {
           const name = stage.querySelectorAll(".hero-name-line");
           const cue = stage.querySelector(".hero-cue");
 
-          // Hidden until the scrub brings them in; set here rather than in the
-          // markup so nothing is visible before GSAP takes over.
+          // Absolute start for every line. A staggered fromTo on a scrubbed
+          // timeline only immediate-renders its first target, which left the
+          // second line at its natural position, on top of the question. Safe
+          // as a set() now that no CSS transform remains to be composed with.
           gsap.set(name, { yPercent: 120 });
 
           // Entrance is time-based, not scroll-based — it should play on arrival.

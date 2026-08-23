@@ -67,6 +67,10 @@ export default function StickyStage({
       build(tl, stageEl);
     }, stageEl);
 
+    // Signals that GSAP has set its initial states, so layers guarded against
+    // the pre-hydration flash can become visible.
+    wrapEl.dataset.ready = "true";
+
     // Pinned layout depends on measured heights; images and webfonts landing
     // late would otherwise leave every downstream trigger offset.
     const refresh = () => ScrollTrigger.refresh();

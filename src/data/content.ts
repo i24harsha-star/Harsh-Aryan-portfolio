@@ -64,7 +64,7 @@ export const about = {
 export const competitions = {
   title: ["Where thinking", "gets tested"],
   standfirst:
-    "Five national stages across IIM and IIT campuses, most of them as Team WhiteRock with Mayuri Jalin. Each one is a real company, a real constraint, and a clock.",
+    "A collection of cases I worked on across national case competitions, covering different companies, industries and problems.",
   items: [
     {
       slug: "udgam-iitg",

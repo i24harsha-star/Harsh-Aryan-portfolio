@@ -156,9 +156,11 @@ export default function ScrollStack({
     list.forEach((card, i) => {
       if (i < list.length - 1) card.style.marginBottom = `${itemDistance}px`;
       if (reduce) return;
-      card.style.willChange = "transform, filter";
+      // Only transform is promoted. Declaring filter in will-change keeps a
+      // blur layer alive for every card for the life of the page, and
+      // backface-visibility promoted them again on top of that.
+      card.style.willChange = "transform";
       card.style.transformOrigin = "top center";
-      card.style.backfaceVisibility = "hidden";
     });
 
     // Reduced motion: leave the cards as a plain stacked list.

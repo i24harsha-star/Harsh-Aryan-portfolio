@@ -1,5 +1,4 @@
 import ChapterNav from "@/components/ChapterNav";
-import GradualBlur from "@/components/reactbits/GradualBlur";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Competitions from "@/components/Competitions";
@@ -21,16 +20,15 @@ export default function Home() {
         <Contact />
       </main>
 
-      {/* Content dissolves into the bottom edge rather than being cut by a hard
-          line, so the chapter index always sits on a soft field. */}
-      <GradualBlur
-        target="page"
-        position="bottom"
-        height="6rem"
-        strength={1.5}
-        divCount={6}
-        curve="ease-out"
-        zIndex={55}
+      {/* A plain gradient, not GradualBlur.
+          Six stacked backdrop-filter layers pinned to the viewport force the
+          compositor to re-sample and blur that strip on every scroll frame. Over
+          a near-black page the blur is all but invisible next to a gradient, so
+          it was paying a per-frame cost for no visible gain. The component is
+          still in the repo if it is ever wanted on a lighter background. */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-[55] h-24 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/85 to-transparent"
       />
       <ChapterNav />
     </>

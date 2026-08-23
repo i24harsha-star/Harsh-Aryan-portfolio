@@ -8,14 +8,25 @@
    the layout read as expensive.
 --------------------------------------------------------------------------- */
 :root {
-  --bg: #0b0b0b;
-  --bg-raised: #121212;
-  /* Soft concrete rather than pure white — pure #fff glares against near-black. */
-  --fg: #f1f1f1;
-  --fg-muted: rgba(241, 241, 241, 0.56);
-  --fg-faint: rgba(241, 241, 241, 0.34);
-  --line: rgba(241, 241, 241, 0.14);
-  --line-soft: rgba(241, 241, 241, 0.07);
+  /* Warm ink, not neutral black.
+     Neutral #0b0b0b next to pure #fff reads as a wireframe. Pulling a little
+     red and yellow into the base and the type makes the same two-tone scheme
+     read as printed ink on warm paper, which is most of the difference between
+     "black and white" and "expensive". */
+  --bg: #0c0b0a;
+  --bg-raised: #141210;
+  --fg: #f2efea;
+  --fg-muted: rgba(242, 239, 234, 0.58);
+  --fg-faint: rgba(242, 239, 234, 0.36);
+  --line: rgba(242, 239, 234, 0.14);
+  --line-soft: rgba(242, 239, 234, 0.07);
+
+  /* One accent, used scarcely: brass. It picks up the warmth already in both
+     photographs. Reserved for state — the chapter you are in, a link under the
+     cursor, selected text — never for decoration. Spending it on more than that
+     would undo the restraint it is meant to signal. */
+  --accent: #c8a882;
+  --accent-dim: rgba(200, 168, 130, 0.4);
 
   /* The signature curve: easeInOutQuint. Slow to leave, fast through the middle,
      long settle. An ease-out alone reads snappy; this reads deliberate, and that
@@ -36,6 +47,7 @@
   --color-fg-muted: var(--fg-muted);
   --color-fg-faint: var(--fg-faint);
   --color-line: var(--line);
+  --color-accent: var(--accent);
   --font-sans: var(--font-inter);
 }
 
@@ -63,7 +75,7 @@ body {
 }
 
 ::selection {
-  background: var(--fg);
+  background: var(--accent);
   color: var(--bg);
 }
 
@@ -166,6 +178,7 @@ body {
 }
 [data-active="true"] .chapter-decor {
   opacity: 1;
+  background: var(--accent);
   mask: radial-gradient(0.22rem, transparent 99%, #000 100%);
   -webkit-mask: radial-gradient(0.22rem, transparent 99%, #000 100%);
 }
@@ -218,7 +231,7 @@ body {
    Focus — visible for keyboard users, invisible for pointer users
 --------------------------------------------------------------------------- */
 :focus-visible {
-  outline: 1px solid var(--fg);
+  outline: 1px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -268,4 +281,19 @@ body {
     letter-spacing: -0.03em;
     color: var(--fg);
   }
+}
+
+/* The hero's second-state lines are hidden until the stage has been built.
+
+   This guard MUST NOT use `transform`. GSAP parses an existing CSS transform
+   and keeps it as a base, appending its own on top — a CSS translateY(120%)
+   plus a yPercent:120 tween composed to translate(0%,120%) translate(0,79px),
+   i.e. double the intended travel. `visibility` is untouched by the tween, so
+   it suppresses the pre-hydration flash without colliding with the motion. */
+.hero-name-line {
+  visibility: hidden;
+}
+
+[data-ready="true"] .hero-name-line {
+  visibility: visible;
 }
