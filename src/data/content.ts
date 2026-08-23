@@ -139,8 +139,7 @@ export const competitions = {
   photos: [
     { src: "/img/photos/event-1.jpg", caption: "IIT Indore" },
     { src: "/img/photos/event-2.jpg", caption: "Presenting to the panel" },
-    { src: "/img/photos/event-3.jpg", caption: "On stage" },
-    { src: "/img/photos/event-4.jpg", caption: "Case materials" },
+    { src: "/img/photos/event-3.jpg", caption: "Open to questions" },
   ],
 } as const;
 

@@ -60,17 +60,10 @@ def portrait(src, out_dir):
     print("   portrait-colour-1600.jpg")
 
 
-# Curated, in display order. The source folder also holds a tighter crop of the
-# venue shot and two weaker frames; these are the ones worth showing. Chosen by
-# hand rather than by heuristic — they are how Harsh is presented publicly.
-EVENT_PHOTOS = [
-    ("WhatsApp Image 2025-09-04 at 09.10.20.jpeg", "Arriving at IIT Indore"),
-    ("WhatsApp Image 2025-09-10 at 11.03.12 (1).jpeg", "Presenting to the panel"),
-    ("WhatsApp Image 2025-09-10 at 11.03.11.jpeg", "On stage"),
-    ("WhatsApp Image 2025-09-04 at 09.10.27.jpeg", "Case materials"),
-]
-
-
+# The three photographs currently in the source folder, in display order.
+# Kept as an explicit list rather than a directory sweep so that removing a
+# photo from the source removes it from the site, and nothing stale is served
+# from a previous run.
 def background(src, out_dir):
     """Hero background plate.
 
@@ -89,6 +82,42 @@ def background(src, out_dir):
     print("   bg-hero-2400.jpg")
 
 
+EVENT_PHOTOS = [
+    ("WhatsApp-Image-2025-09-04-at-09.10.20.png", "IIT Indore"),
+    ("WhatsApp Image 2025-09-10 at 11.03.12 (1).jpeg", "Presenting to the panel"),
+    ("WhatsApp Image 2025-09-10 at 11.03.11.jpeg", "Open to questions"),
+]
+
+# Regions blurred before publishing, keyed by source filename, as fractions of
+# width/height so they survive any resize.
+#
+# The stage photograph shows the closing slide, which prints both teammates'
+# institute email addresses — once under each portrait and again in the footer.
+# At 4160px wide they are perfectly legible. Harsh's own address is already
+# public on his CV; Mayuri Jalin's is not his to publish, and a scraped address
+# cannot be recalled. Blur the text, keep the photograph.
+REDACTIONS = {
+    "WhatsApp Image 2025-09-10 at 11.03.11.jpeg": [
+        (0.512, 0.460, 0.801, 0.491),   # both addresses beneath the portraits
+        (0.541, 0.541, 0.769, 0.570),   # the footer line
+    ],
+}
+
+
+def _redact(im, regions):
+    """Blur the given fractional regions beyond recovery."""
+    from PIL import ImageFilter
+
+    w, h = im.size
+    for x0, y0, x1, y1 in regions:
+        box = (int(x0 * w), int(y0 * h), int(x1 * w), int(y1 * h))
+        patch = im.crop(box)
+        # Radius scales with region size so the result is unreadable at any width.
+        radius = max(6, (box[2] - box[0]) // 22)
+        im.paste(patch.filter(ImageFilter.GaussianBlur(radius)), box)
+    return im
+
+
 def photos(src_dir, out_dir):
     for i, (name, _caption) in enumerate(EVENT_PHOTOS, 1):
         p = os.path.join(src_dir, name)
@@ -96,7 +125,11 @@ def photos(src_dir, out_dir):
             print(f"   !! missing: {name}", file=sys.stderr)
             continue
         im = Image.open(p).convert("RGB")
-        _save(_mono(_fit(im, 1600)), os.path.join(out_dir, f"event-{i}.jpg"))
+        if name in REDACTIONS:
+            im = _redact(im, REDACTIONS[name])
+            print(f"   (redacted {len(REDACTIONS[name])} region(s) in {name})")
+        # Colour, not monochrome.
+        _save(_fit(im, 1800), os.path.join(out_dir, f"event-{i}.jpg"))
         print(f"   event-{i}.jpg  <- {name}")
 
 

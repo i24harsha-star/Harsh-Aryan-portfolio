@@ -30,7 +30,10 @@ export default function Competitions() {
         strip,
         { x: 0 },
         {
-          x: () => -(strip.scrollWidth - window.innerWidth * 0.92),
+          // Never negative: with few enough photos the strip is narrower than
+          // the viewport, and a negative distance would drift it rightwards
+          // off the screen instead of holding still.
+          x: () => -Math.max(0, strip.scrollWidth - window.innerWidth * 0.92),
           ease: "none",
           scrollTrigger: {
             trigger: strip.parentElement,
@@ -134,13 +137,13 @@ export default function Competitions() {
       <div className="bleed mt-24 overflow-hidden lg:mt-32">
         <div className="photo-strip flex w-max gap-4">
           {competitions.photos.map((p) => (
-            <figure key={p.src} className="relative w-[68vw] shrink-0 sm:w-[42vw] lg:w-[30vw]">
+            <figure key={p.src} className="relative w-[78vw] shrink-0 sm:w-[52vw] lg:w-[40vw]">
               <div className="relative aspect-[4/3] overflow-hidden bg-bg-raised">
                 <Image
                   src={p.src}
                   alt={p.caption}
                   fill
-                  sizes="(max-width: 640px) 68vw, (max-width: 1024px) 42vw, 30vw"
+                  sizes="(max-width: 640px) 78vw, (max-width: 1024px) 52vw, 40vw"
                   className="object-cover"
                 />
               </div>
