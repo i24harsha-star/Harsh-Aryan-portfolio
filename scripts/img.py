@@ -66,6 +66,22 @@ EVENT_PHOTOS = [
 ]
 
 
+def background(src, out_dir):
+    """Hero background plate.
+
+    The source is a 4000x6000 portrait with a small subject and a lot of open
+    grass. It is NOT hard-cropped to a landscape frame here: at 16:9 only ~42%
+    of its height survives, and the figure alone is 82% of that, so any fixed
+    crop either clips him or leaves no room for the type. Exporting the whole
+    frame and letting CSS object-position choose the window keeps the framing
+    tunable per breakpoint, and lets the native portrait serve mobile as shot.
+    """
+    im = Image.open(src).convert("RGB")
+    for w in (1200, 1800, 2400):
+        _save(_mono(_fit(im, w), contrast=1.22), os.path.join(out_dir, f"bg-hero-{w}.jpg"), quality=80)
+        print(f"   bg-hero-{w}.jpg")
+
+
 def photos(src_dir, out_dir):
     for i, (name, _caption) in enumerate(EVENT_PHOTOS, 1):
         p = os.path.join(src_dir, name)
@@ -94,6 +110,12 @@ def work(src_dir, out_dir):
 
 if __name__ == "__main__":
     mode = sys.argv[1]
-    {"cover": cover, "portrait": portrait, "photos": photos, "work": work}[mode](
+    {
+        "cover": cover,
+        "portrait": portrait,
+        "background": background,
+        "photos": photos,
+        "work": work,
+    }[mode](
         sys.argv[2], sys.argv[3]
     )

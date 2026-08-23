@@ -103,17 +103,17 @@ export default function Hero() {
           {/* Layer 2 — portrait, revealed from behind the question */}
           <div className="hero-portrait absolute inset-0 opacity-0">
             <Image
-              src="/img/portrait-1600.jpg"
+              src="/img/bg-hero-2400.jpg"
               alt=""
               fill
               priority
               sizes="100vw"
-              className="object-cover object-[50%_28%] contrast-[1.35] brightness-[0.92]"
+              className="hero-bg-img object-cover contrast-[1.18] brightness-[0.86]"
             />
             {/* Scrim weighted to the lower third, where the name sits, so the
                 photograph keeps its midtones instead of going uniformly muddy. */}
             <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)]/55 via-transparent to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/85 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-[46%] bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/80 to-transparent md:h-[62%] md:via-[var(--bg)]/85" />
           </div>
 
           {/* Layer 1 — the question */}
@@ -132,14 +132,23 @@ export default function Hero() {
           {/* Layer 3 — the name, resolving over the portrait */}
           <div className="absolute inset-x-0 bottom-[16svh] flex items-end">
             <div className="shell">
-              <h2 className="display-sm">
-                {[site.name, "Equity Research"].map((line) => (
-                  <span key={line} className="line-mask">
-                    {/* No Tailwind translate here — GSAP owns this transform, and a
-                        utility translate would be folded into its start value. */}
-                    <span className="hero-name-line inline-block">{line}</span>
+              {/* Two lines, styled independently. At display size the descriptor
+                  is 31 characters and wraps to three ragged lines on a phone, so
+                  below 768px it drops to a tracked caption instead — name large,
+                  descriptor small, which reads as intended rather than cramped. */}
+              <h2>
+                <span className="line-mask">
+                  {/* No Tailwind translate here — GSAP owns this transform, and a
+                      utility translate would be folded into its start value. */}
+                  <span className="hero-name-line display-sm inline-block">
+                    {site.name}
                   </span>
-                ))}
+                </span>
+                <span className="line-mask mt-2 md:mt-0">
+                  <span className="hero-name-line hero-name-sub inline-block whitespace-nowrap">
+                    Finance · Investments · Business
+                  </span>
+                </span>
               </h2>
             </div>
           </div>

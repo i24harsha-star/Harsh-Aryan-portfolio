@@ -109,6 +109,9 @@ cover "harsh-aryan-cv.pdf"                             "cv"
 say "→ processing portrait"
 /opt/anaconda3/bin/python3 "$ROOT/scripts/img.py" portrait "$SRC/Profile Pic.png" "$IMG"
 
+say "→ processing hero background"
+/opt/anaconda3/bin/python3 "$ROOT/scripts/img.py" background "$SRC/Background Pic.png" "$IMG"
+
 # ---------------------------------------------------------------------------
 # 4. Event photography — monochrome
 # ---------------------------------------------------------------------------

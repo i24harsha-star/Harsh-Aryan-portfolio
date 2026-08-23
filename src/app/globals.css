@@ -221,3 +221,51 @@ body {
   outline: 1px solid var(--fg);
   outline-offset: 3px;
 }
+
+/* ---------------------------------------------------------------------------
+   Hero background plate
+
+   The source photograph is 4000x6000 — a tall frame with a small figure and a
+   lot of open lawn. At 16:9 only ~42% of its height is visible, so which band
+   is shown has to be chosen per breakpoint rather than left at "center".
+
+   Wide screens sit high in the frame so the lawn carries the lower half and the
+   name has somewhere quiet to land. Portrait screens can show the shot close to
+   as-composed.
+--------------------------------------------------------------------------- */
+.hero-bg-img {
+  object-position: 50% 62%;
+}
+
+@media (min-width: 768px) {
+  .hero-bg-img {
+    object-position: 52% 58%;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-bg-img {
+    object-position: 52% 54%;
+  }
+}
+
+/* Hero descriptor: a tracked caption on phones, display type from 768px up. */
+.hero-name-sub {
+  font-size: 0.8125rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  /* Full strength, not --fg-muted: at 13px this is body-size text, so it needs
+     4.5:1 over the photograph, and muted measured 4.09:1. */
+  color: var(--fg);
+}
+
+@media (min-width: 768px) {
+  .hero-name-sub {
+    font-weight: 100;
+    font-size: clamp(2rem, 4.6vw, 4.75rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+  }
+}
