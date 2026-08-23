@@ -25,12 +25,20 @@ export default function About() {
     const frame = self.querySelector(".portrait-frame");
     const img = self.querySelector(".portrait-img");
     if (frame && img) {
+      // Scale-only parallax anchored to the TOP of the frame.
+      //
+      // The photograph and the frame are both 3:4, so object-cover crops
+      // nothing — every pixel lost was lost to this transform. The previous
+      // version started at { yPercent: -7, scale: 1.14 }, which with a centred
+      // origin took 14% off the top and cut the top of his head. Origin at the
+      // top means the head is fixed and all overflow leaves from the bottom,
+      // so the crop can only ever come off the feet.
       gsap.fromTo(
         img,
-        { yPercent: -7, scale: 1.14 },
+        { scale: 1, transformOrigin: "top center" },
         {
-          yPercent: 7,
-          scale: 1.14,
+          scale: 1.12,
+          transformOrigin: "top center",
           ease: "none",
           scrollTrigger: { trigger: frame, start: "top bottom", end: "bottom top", scrub: 0.5 },
         }
@@ -58,7 +66,7 @@ export default function About() {
           <div className="lg:col-span-5 lg:col-start-1">
             <div className="portrait-frame relative aspect-[3/4] overflow-hidden">
               <Image
-                src="/img/portrait-1200.jpg"
+                src="/img/portrait-colour-1600.jpg"
                 alt="Harsh Aryan"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"

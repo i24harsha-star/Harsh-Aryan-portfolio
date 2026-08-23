@@ -46,11 +46,16 @@ def cover(src, out):
 
 
 def portrait(src, out_dir):
+    """Chapter I portrait.
+
+    Shipped in colour: it is the single colour element on an otherwise
+    monochrome site, which makes it the focal point rather than a break in the
+    system.
+
+    One file only: next/image derives its own responsive variants from the
+    source, so emitting several widths here just shipped bytes nothing linked to.
+    """
     im = Image.open(src).convert("RGB")
-    for w in (800, 1200, 1600):
-        _save(_mono(_fit(im, w)), os.path.join(out_dir, f"portrait-{w}.jpg"))
-        print(f"   portrait-{w}.jpg")
-    # colour original kept in case the design ever wants it
     _save(_fit(im, 1600), os.path.join(out_dir, "portrait-colour-1600.jpg"))
     print("   portrait-colour-1600.jpg")
 
@@ -75,11 +80,13 @@ def background(src, out_dir):
     crop either clips him or leaves no room for the type. Exporting the whole
     frame and letting CSS object-position choose the window keeps the framing
     tunable per breakpoint, and lets the native portrait serve mobile as shot.
+
+    One file only: next/image derives its own responsive variants from the
+    source, so emitting several widths here just shipped bytes nothing linked to.
     """
     im = Image.open(src).convert("RGB")
-    for w in (1200, 1800, 2400):
-        _save(_mono(_fit(im, w), contrast=1.22), os.path.join(out_dir, f"bg-hero-{w}.jpg"), quality=80)
-        print(f"   bg-hero-{w}.jpg")
+    _save(_mono(_fit(im, 2400), contrast=1.22), os.path.join(out_dir, "bg-hero-2400.jpg"), quality=80)
+    print("   bg-hero-2400.jpg")
 
 
 def photos(src_dir, out_dir):

@@ -38,9 +38,10 @@ export const chapters = [
 export const about = {
   title: ["Numbers, and", "what they hide"],
   paragraphs: [
-    "I am in my third year of the Integrated Programme in Management at IIM Indore, and I have cleared CFA Level I. What holds my attention is not finance as a subject but finance as a question: how businesses create value, how markets price it, and how capital gets deployed against an uncertain future.",
-    "I don’t think that question can be answered from a textbook. So most of what I have learned came from building things — an equity research process, a Monte Carlo model, an earnings-quality screen, and eventually an entire financial intelligence platform — and then finding out where my reasoning broke.",
-    "Eight weeks inside Access Livelihoods taught me the part no course covers: how an organisation actually runs. Governance, restructuring, statutory documentation, and the people — company secretaries, chartered accountants, auditors, bankers — who keep it standing.",
+    "I don’t know if I’ve ever been interested in having all the answers. I’ve always been more interested in finding better questions.",
+    "Questions about why things work the way they do. Why some people see something before everyone else does. Why certain ideas survive while others disappear. What sits beneath the surface of things that seem simple from a distance.",
+    "Maybe that’s why I keep finding myself drawn to unfamiliar territory. I like the feeling of not knowing something yet. Of taking it apart. Following a thread. Building something from nothing and discovering, somewhere along the way, that my first understanding of it was wrong.",
+    "I’m still becoming. And perhaps that’s the part I find most interesting.",
   ],
   facts: [
     { label: "Programme", value: "Integrated Programme in Management, IIM Indore · Year III" },
