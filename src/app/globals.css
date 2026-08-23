@@ -164,7 +164,7 @@ body {
 .chapter-decor {
   transition: opacity 0.6s var(--ease), mask 0.6s var(--ease);
 }
-.chapter-item[data-active="true"] .chapter-decor {
+[data-active="true"] .chapter-decor {
   opacity: 1;
   mask: radial-gradient(0.22rem, transparent 99%, #000 100%);
   -webkit-mask: radial-gradient(0.22rem, transparent 99%, #000 100%);

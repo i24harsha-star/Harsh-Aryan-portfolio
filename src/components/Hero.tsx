@@ -93,9 +93,10 @@ export default function Hero() {
               { opacity: 1, scale: 1.06, yPercent: 0, duration: 0.55 },
               0.28
             )
-            .to(name, { yPercent: 0, duration: 0.4, stagger: 0.06 }, 0.52)
-            // Hand off: the whole scene sinks slightly as Chapter I takes over.
-            .to(stage, { opacity: 0.25, duration: 0.25 }, 0.78);
+            .to(name, { yPercent: 0, duration: 0.22, stagger: 0.05 }, 0.45)
+            // Hand off only AFTER the name has held at full strength. Overlapping
+            // the exit with the name's arrival dimmed it to a 2.3:1 grey-on-grey.
+            .to(stage, { opacity: 0.3, duration: 0.12 }, 0.88);
         }}
       >
         <div className="relative h-full w-full">
@@ -107,9 +108,12 @@ export default function Hero() {
               fill
               priority
               sizes="100vw"
-              className="object-cover object-[50%_28%]"
+              className="object-cover object-[50%_28%] contrast-[1.35] brightness-[0.92]"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)]/70 via-[var(--bg)]/35 to-[var(--bg)]" />
+            {/* Scrim weighted to the lower third, where the name sits, so the
+                photograph keeps its midtones instead of going uniformly muddy. */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)]/55 via-transparent to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/85 to-transparent" />
           </div>
 
           {/* Layer 1 — the question */}

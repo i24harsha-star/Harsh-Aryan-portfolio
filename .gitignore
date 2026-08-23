@@ -41,3 +41,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Playwright CLI scratch (screenshots, snapshots, console logs)
+.playwright-cli/
+
+# Third-party skills installed via `npx skills add`. Restored with
+# `npx skills experimental_install` from skills-lock.json, which IS committed.
+# Not vendored into the repo: they arrived without a licence file, so
+# redistributing them here would not be ours to do.
+.claude/skills/*
+!.claude/skills/web-interface-guidelines/

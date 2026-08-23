@@ -87,54 +87,56 @@ export default function ChapterNav() {
             onMouseEnter={() => setHovered(c.id)}
             onMouseLeave={() => setHovered(null)}
             aria-current={on ? "true" : undefined}
-            /* Active item grows into the leftover space; inactive items hold a
-               fixed width — wide enough for a full label on desktop, just the
-               numeral on a phone. Both must be set explicitly: a `flex-1` on an
-               item that also has `grow-0` collapses it to zero width. */
-            className={`chapter-item pointer-events-auto relative h-[1.45rem] overflow-hidden py-1 transition-[flex-grow] duration-500 ease-[var(--ease)] ${
+            /* The link is the hit area — 44px on mobile, 28px on desktop, per
+               the ≥24px / ≥44px touch-target rule. The visual strip stays
+               1.45rem and sits at the bottom of it, so the row still reads as
+               a hairline while remaining comfortably tappable. */
+            className={`pointer-events-auto flex h-11 items-end lg:h-7 ${
               on
                 ? "shrink grow basis-0 min-w-[6rem]"
                 : "shrink-0 grow-0 basis-auto min-w-[2.25rem] lg:min-w-[11.4375rem]"
-            }`}
+            } transition-[flex-grow] duration-500 ease-[var(--ease)]`}
           >
-            {/* light panel that slides up on hover */}
-            <span
-              className="absolute inset-0 bg-[var(--fg)] transition-transform duration-[600ms] ease-[var(--ease)]"
-              style={{
-                transform: hovered === c.id ? "translateY(0)" : "translateY(110%)",
-              }}
-              aria-hidden
-            />
-
-            <span
-              className={`relative z-[2] block text-[0.5625rem] tracking-[0.2em] uppercase transition-[opacity,color] duration-[600ms] ease-[var(--ease)] ${
-                hovered === c.id ? "text-[var(--bg)]" : "text-[var(--fg)]"
-              } ${on || hovered === c.id ? "opacity-100" : "opacity-50"}`}
-            >
-              <span className="lg:hidden">{on ? `Chapter ${c.numeral}` : c.numeral}</span>
-              <span className="hidden lg:inline">Chapter {c.numeral}</span>
-              <span className="hidden xl:inline"> — {c.label}</span>
-            </span>
-
-            {/* square marker; becomes a ring when active */}
-            <span
-              className={`chapter-decor absolute top-1.5 z-[2] hidden size-[0.5625rem] bg-[var(--fg)] opacity-20 lg:block ${
-                isLast ? "left-0" : "right-0"
-              }`}
-              aria-hidden
-            />
-
-            {/* hairline + per-chapter progress fill */}
-            <span
-              className="absolute inset-x-0 bottom-0 h-px bg-[rgba(241,241,241,0.2)]"
-              aria-hidden
-            >
+            <span className="chapter-item relative block h-[1.45rem] w-full overflow-hidden py-1">
+              {/* light panel that slides up on hover */}
               <span
-                ref={(el) => {
-                  fills.current[c.id] = el;
+                className="absolute inset-0 bg-[var(--fg)] transition-transform duration-[600ms] ease-[var(--ease)]"
+                style={{
+                  transform: hovered === c.id ? "translateY(0)" : "translateY(110%)",
                 }}
-                className="absolute left-0 top-0 block h-full w-0 bg-[var(--fg)]"
+                aria-hidden
               />
+
+              <span
+                className={`relative z-[2] block text-[0.5625rem] tracking-[0.2em] uppercase transition-[opacity,color] duration-[600ms] ease-[var(--ease)] ${
+                  hovered === c.id ? "text-[var(--bg)]" : "text-[var(--fg)]"
+                } ${on || hovered === c.id ? "opacity-100" : "opacity-50"}`}
+              >
+                <span className="lg:hidden">{on ? `Chapter ${c.numeral}` : c.numeral}</span>
+                <span className="hidden lg:inline">Chapter {c.numeral}</span>
+                <span className="hidden xl:inline"> — {c.label}</span>
+              </span>
+
+              {/* square marker; becomes a ring when active */}
+              <span
+                className={`chapter-decor absolute top-1.5 z-[2] hidden size-[0.5625rem] bg-[var(--fg)] opacity-20 lg:block ${
+                  isLast ? "left-0" : "right-0"
+                }`}
+                aria-hidden
+              />
+
+              {/* hairline + per-chapter progress fill */}
+              <span
+                className="absolute inset-x-0 bottom-0 h-px bg-[rgba(241,241,241,0.2)]"
+                aria-hidden
+              >
+                <span
+                  ref={(el) => {
+                    fills.current[c.id] = el;
+                  }}
+                  className="absolute left-0 top-0 block h-full w-0 bg-[var(--fg)]"
+                />
+              </span>
             </span>
           </a>
         );

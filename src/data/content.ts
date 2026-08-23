@@ -1,7 +1,7 @@
 /**
  * All site copy and content in one place.
  *
- * Everything here is drawn from Harsh's CV, LinkedIn and the source documents —
+ * Everything here is drawn from Harsh’s CV, LinkedIn and the source documents —
  * no invented credentials, results or numbers. Anything still awaiting his input
  * is marked NEEDS INPUT rather than filled with plausible-sounding filler.
  */
@@ -39,7 +39,7 @@ export const about = {
   title: ["Numbers, and", "what they hide"],
   paragraphs: [
     "I am in my third year of the Integrated Programme in Management at IIM Indore, and I have cleared CFA Level I. What holds my attention is not finance as a subject but finance as a question: how businesses create value, how markets price it, and how capital gets deployed against an uncertain future.",
-    "I don't think that question can be answered from a textbook. So most of what I have learned came from building things — an equity research process, a Monte Carlo model, an earnings-quality screen, and eventually an entire financial intelligence platform — and then finding out where my reasoning broke.",
+    "I don’t think that question can be answered from a textbook. So most of what I have learned came from building things — an equity research process, a Monte Carlo model, an earnings-quality screen, and eventually an entire financial intelligence platform — and then finding out where my reasoning broke.",
     "Eight weeks inside Access Livelihoods taught me the part no course covers: how an organisation actually runs. Governance, restructuring, statutory documentation, and the people — company secretaries, chartered accountants, auditors, bankers — who keep it standing.",
   ],
   facts: [
@@ -68,7 +68,7 @@ export const competitions = {
     {
       slug: "udgam-iitg",
       event: "Equity Research Challenge",
-      host: "UDGAM'26 · IIT Guwahati",
+      host: "UDGAM’26 · IIT Guwahati",
       date: "January 2026",
       result: "National Finalist · Rank 1",
       resultNote: "Score 9.5 — shortlisted from 1,295+ registrations",
@@ -81,7 +81,7 @@ export const competitions = {
     {
       slug: "case-chronicles",
       event: "Case Chronicles",
-      host: "E-Summit'25 · IIT Indore",
+      host: "E-Summit’25 · IIT Indore",
       date: "September 2025",
       result: "National Runner-up",
       resultNote: "Rank 2 nationally",
@@ -94,7 +94,7 @@ export const competitions = {
     {
       slug: "casecon",
       event: "CaseCon",
-      host: "Infotsav'25 · ABV-IIITM Gwalior",
+      host: "Infotsav’25 · ABV-IIITM Gwalior",
       date: "September 2025",
       result: "National Finalist",
       resultNote: "Shortlisted from 200+ teams",
@@ -107,7 +107,7 @@ export const competitions = {
     {
       slug: "case-o-nova",
       event: "Case-O-Nova 7.0",
-      host: "SMASH'25 · IIM Bangalore",
+      host: "SMASH’25 · IIM Bangalore",
       date: "2025",
       result: "National Finalist",
       resultNote: "Two-round onsite final",
@@ -146,7 +146,7 @@ export const competitions = {
 export const projects = {
   title: ["Built to", "understand"],
   standfirst:
-    "Every one of these started as a question I couldn't answer by reading. The fastest way to find out where your reasoning is wrong is to build the thing and watch it fail.",
+    "Every one of these started as a question I couldn’t answer by reading. The fastest way to find out where your reasoning is wrong is to build the thing and watch it fail.",
   aegis: {
     name: "AEGIS.os",
     tagline: "AI Financial Intelligence Platform",
@@ -173,11 +173,11 @@ export const projects = {
       },
       {
         head: "AI analyses, code calculates",
-        body: "Every spread, change and average is deterministic code. The model only interprets. Models don't do arithmetic here.",
+        body: "Every spread, change and average is deterministic code. The model only interprets. Models don’t do arithmetic here.",
       },
       {
         head: "Every output is traceable",
-        body: "Prompts are versioned with a regression suite, so changing one can't silently degrade quality.",
+        body: "Prompts are versioned with a regression suite, so changing one can’t silently degrade quality.",
       },
     ],
     stack: ["Next.js", "TypeScript", "Supabase", "OpenAI"],
@@ -199,7 +199,7 @@ export const projects = {
       summary:
         "An earnings-quality screen built on the relationship between net profit and cash flow from operations, applying CFA Level I cash-flow-statement analysis across twelve years of data.",
       finding:
-        "Where a company's average NP/CFO sits close to its median, earnings are steadier. Where the two diverge, the average is being dragged by years that don't repeat.",
+        "Where a company’s average NP/CFO sits close to its median, earnings are steadier. Where the two diverge, the average is being dragged by years that don’t repeat.",
       doc: "/docs/income-quality-chemicals.xlsx",
       docLabel: "Workbook (XLSX)",
     },
@@ -236,7 +236,7 @@ export const projects = {
     {
       name: "Is South Korea a Bubble?",
       subtitle: "Or the first true AI wealth effect · Substack",
-      summary: "First published essay — on whether Korea's move is a bubble or something structural.",
+      summary: "First published essay — on whether Korea’s move is a bubble or something structural.",
       href: "https://harsharyan1.substack.com",
     },
   ],
@@ -263,7 +263,7 @@ export const cv = {
       period: "April – June 2026",
       points: [
         "Worked directly with the COO on governance, corporate restructuring and capital formation across multiple entities.",
-        "Analysed India's Social Stock Exchange framework as an alternative capital-raising mechanism — securing a follow-on paid live project on SSE registration.",
+        "Analysed India’s Social Stock Exchange framework as an alternative capital-raising mechanism — securing a follow-on paid live project on SSE registration.",
         "Built a gratuity liability valuation model to project long-term employee benefit obligations.",
         "Executed documentation for renewal of a ₹17.67 lakh performance bank guarantee.",
       ],
@@ -310,11 +310,11 @@ export const cv = {
 
 export const mentoring = {
   // Deliberately not "one hour" — the session length is still undecided, and the
-  // heading shouldn't promise a duration Harsh hasn't chosen.
+  // heading shouldn’t promise a duration Harsh hasn’t chosen.
   title: ["One session,", "one seat closer"],
   price: 499,
   currency: "INR",
-  // NEEDS INPUT — duration, topics, policies and availability all need Harsh's
+  // NEEDS INPUT — duration, topics, policies and availability all need Harsh’s
   // decisions before this section can go live. Placeholders are written as
   // honest drafts, not as claims.
   duration: "NEEDS INPUT",
@@ -330,14 +330,14 @@ export const mentoring = {
   notFor: [
     "Guaranteed placements or referrals",
     "Investment or trading advice",
-    "Anything I haven't done myself",
+    "Anything I haven’t done myself",
   ],
   disclaimer:
     "This is career and study mentoring only. It is not investment advice, and nothing in a session is a recommendation to buy or sell any security.",
 } as const;
 
 export const contact = {
-  title: ["Let's", "talk"],
+  title: ["Let’s", "talk"],
   stats: [
     { value: 5, label: "National finals reached", suffix: "" },
     { value: 1.7, label: "Photograph views", suffix: "M+", decimals: 1 },
