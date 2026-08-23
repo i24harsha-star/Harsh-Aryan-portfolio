@@ -80,25 +80,25 @@ done
 # ---------------------------------------------------------------------------
 say "→ rendering deck covers"
 
-cover() { # <doc filename> <output slug>
+cover() { # <doc filename> <output slug> [footer-trim fraction]
   local pdf="$DOCS/$1"
   [ -f "$pdf" ] || return 0
   rm -rf "$TMP/pg"; mkdir -p "$TMP/pg"
   /opt/anaconda3/bin/python3 "$ROOT/scripts/pdf.py" pages "$pdf" "$TMP/pg" page 1 1600 >/dev/null
   local out="$TMP/pg/page-p1.jpg"
   if [ -f "$out" ]; then
-    /opt/anaconda3/bin/python3 "$ROOT/scripts/img.py" cover "$out" "$IMG/covers/$2.jpg"
+    /opt/anaconda3/bin/python3 "$ROOT/scripts/img.py" cover "$out" "$IMG/covers/$2.jpg" "${3:-0}"
     echo "   $2.jpg"
   else
     echo "   !! cover failed: $1" >&2
   fi
 }
 
-cover "udgam-iitg-equity-research.pdf"                 "udgam-iitg"
-cover "case-chronicles-iiti.pdf"                       "case-chronicles"
-cover "case-o-nova-iimb.pdf"                           "case-o-nova"
-cover "casecon-abv-iiitm.pdf"                          "casecon"
-cover "samadhan-upay.pdf"                              "samadhan"
+cover "udgam-iitg-equity-research.pdf"                 "udgam-iitg" 0.07
+cover "case-chronicles-iiti.pdf"                       "case-chronicles" 0.07
+cover "case-o-nova-iimb.pdf"                           "case-o-nova" 0.07
+cover "casecon-abv-iiitm.pdf"                          "casecon" 0.07
+cover "samadhan-upay.pdf"                              "samadhan" 0.07
 cover "how-to-read-an-annual-report.pdf"               "annual-report"
 cover "three-lessons-before-your-first-internship.pdf" "three-lessons"
 cover "harsh-aryan-cv.pdf"                             "cv"

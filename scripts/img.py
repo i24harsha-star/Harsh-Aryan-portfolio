@@ -37,11 +37,22 @@ def _fit(im, width):
     return im.resize((width, h), Image.LANCZOS)
 
 
-def cover(src, out):
+def cover(src, out, trim_footer="0"):
+    """Page-one cover image.
+
+    `trim_footer` cuts a fraction off the bottom. The Team WhiteRock decks carry
+    a footer strip with both teammates' email addresses, so theirs is trimmed.
+
+    It is opt-in rather than applied to everything: trimming changes the aspect
+    ratio, and the CV is displayed in an A4-shaped frame. Cropping 7% off its
+    height took it from 0.707 to 0.760, and object-cover then removed the
+    difference from the left and right edges — which is why the CV preview was
+    clipped down both sides.
+    """
     im = Image.open(src).convert("RGB")
-    # The team decks carry a footer strip with both teammates' email addresses.
-    # Trim it so the cover art can be shown without publishing personal contacts.
-    im = im.crop((0, 0, im.width, int(im.height * 0.93)))
+    frac = float(trim_footer)
+    if frac:
+        im = im.crop((0, 0, im.width, int(im.height * (1 - frac))))
     _save(_fit(im, 1000), out)
 
 
