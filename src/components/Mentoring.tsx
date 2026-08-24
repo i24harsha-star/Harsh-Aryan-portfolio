@@ -7,14 +7,18 @@ import { mentoring, chapterMeta } from "@/data/content";
 /**
  * The paid section.
  *
- * The payment gateway is not connected yet, so this deliberately does NOT render
- * a live "Pay ₹499" button. Showing a pay control that cannot take money — or
- * that silently does nothing — is worse than saying booking opens soon. Flip
- * NEXT_PUBLIC_BOOKING_LIVE to "true" once Razorpay keys and a Calendly link are
- * in place, and the real call to action renders instead.
+ * Payment comes FIRST, then booking. Calendly's free plan cannot collect money
+ * (payments are a Standard-plan feature) and Cal.com's free plan can, but only
+ * through Stripe or PayPal — Stripe India needs a registered business with
+ * GSTIN, and PayPal stopped domestic Indian payments in 2021. So the button
+ * points at a Razorpay Payment Page, which is free to run and settles to an
+ * individual's bank account; Razorpay then redirects to the booking link.
+ *
+ * Until that page exists, this deliberately renders no pay control at all. A
+ * button that looks like it takes money but cannot is worse than saying
+ * booking opens soon.
  */
-const bookingLive = process.env.NEXT_PUBLIC_BOOKING_LIVE === "true";
-const calendly = process.env.NEXT_PUBLIC_CALENDLY_URL ?? "";
+const paymentUrl = process.env.NEXT_PUBLIC_PAYMENT_URL ?? "";
 
 export default function Mentoring() {
   const { numeral, label } = chapterMeta("mentoring");
@@ -94,14 +98,14 @@ export default function Mentoring() {
 
               <hr className="rule my-8" />
 
-              {bookingLive && calendly ? (
+              {paymentUrl ? (
                 <a
-                  href={calendly}
+                  href={paymentUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full rounded-full bg-white px-6 py-4 text-center text-[0.625rem] font-medium tracking-[0.18em] uppercase text-black transition-opacity duration-500 hover:opacity-85"
                 >
-                  Book a session
+                  Pay ₹499 & book
                 </a>
               ) : (
                 <div>
