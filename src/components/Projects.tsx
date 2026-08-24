@@ -5,9 +5,10 @@ import ChapterHead from "./ChapterHead";
 import MonteCarloChart from "./MonteCarloChart";
 import IncomeQualityChart from "./IncomeQualityChart";
 import { useGsapContext, gsap, EASE } from "@/lib/motion";
-import { projects } from "@/data/content";
+import { projects, chapterMeta } from "@/data/content";
 
 export default function Projects() {
+  const { numeral, label } = chapterMeta("projects");
   const scope = useGsapContext(({ self }) => {
     self.querySelectorAll<HTMLElement>("[data-block]").forEach((block) => {
       gsap.from(block.querySelectorAll(":scope > *"), {
@@ -31,8 +32,8 @@ export default function Projects() {
     >
       <div className="shell">
         <ChapterHead
-          numeral="III"
-          label="Projects"
+          numeral={numeral}
+          label={label}
           title={projects.title}
           standfirst={projects.standfirst}
         />

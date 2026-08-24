@@ -26,14 +26,28 @@ export const hero = {
   scrollCue: ["Scroll down", "to begin"],
 } as const;
 
+// Reading order. The Record sits at II so the story runs: who he is, the
+// credentials that back it, then the work — case competitions, then projects.
 export const chapters = [
   { id: "about", numeral: "I", label: "Who I Am" },
-  { id: "competitions", numeral: "II", label: "Case Work" },
-  { id: "projects", numeral: "III", label: "Projects" },
-  { id: "cv", numeral: "IV", label: "The Record" },
+  { id: "cv", numeral: "II", label: "The Record" },
+  { id: "competitions", numeral: "III", label: "Case Work" },
+  { id: "projects", numeral: "IV", label: "Projects" },
   { id: "mentoring", numeral: "V", label: "Mentoring" },
   { id: "contact", numeral: "VI", label: "Contact" },
 ] as const;
+
+export type ChapterId = (typeof chapters)[number]["id"];
+
+/**
+ * Numeral and label for a chapter, looked up rather than hard-coded in each
+ * section — reordering the array above is now the only edit a reorder needs.
+ */
+export function chapterMeta(id: ChapterId): { numeral: string; label: string } {
+  const c = chapters.find((x) => x.id === id);
+  if (!c) throw new Error(`unknown chapter: ${id}`);
+  return { numeral: c.numeral, label: c.label };
+}
 
 export const about = {
   title: ["Numbers, and", "what they hide"],
@@ -45,7 +59,7 @@ export const about = {
   ],
   facts: [
     { label: "Programme", value: "Integrated Programme in Management, IIM Indore · Year III" },
-    { label: "Charter progress", value: "CFA Level I cleared · Level II candidate" },
+    { label: "Charter progress", value: "CFA Level I passed · May 2026" },
     { label: "Focus", value: "Investment banking · Equity research · PE/VC · Wealth management" },
     { label: "Based in", value: "Indore, Madhya Pradesh, India" },
   ],
@@ -76,7 +90,7 @@ export const competitions = {
       summary:
         "Designed a GARP-based small and mid-cap hybrid equity fund using a top-down framework: macro and sectoral outlook, then growth, valuation, profitability and cash-flow-quality filters. Dynacons Systems & Solutions was taken through full fundamental analysis.",
       doc: "/docs/udgam-iitg-equity-research.pdf",
-      cover: "/img/covers/udgam-iitg.jpg",
+      cover: "/img/thumbs/udgam-iitg.jpg",
       pages: 20,
     },
     {
@@ -89,7 +103,7 @@ export const competitions = {
       summary:
         "A quick-commerce strategy case: defending a 60-minute fashion delivery platform against quick-commerce expansion while capturing the impulse-fashion opportunity.",
       doc: "/docs/case-chronicles-iiti.pdf",
-      cover: "/img/covers/case-chronicles.jpg",
+      cover: "/img/thumbs/case-chronicles.jpg",
       pages: 8,
     },
     {
@@ -102,7 +116,7 @@ export const competitions = {
       summary:
         "Market opportunity analysis, go-to-market strategy and an implementation roadmap, structured as a research-backed solution under strict slide and time limits.",
       doc: "/docs/casecon-abv-iiitm.pdf",
-      cover: "/img/covers/casecon.jpg",
+      cover: "/img/thumbs/casecon.jpg",
       pages: 10,
     },
     {
@@ -115,7 +129,7 @@ export const competitions = {
       summary:
         "A two-round strategy case worked through competitive analysis and financial modelling, including a VRIO assessment and comparative benchmarking against category incumbents.",
       doc: "/docs/case-o-nova-iimb.pdf",
-      cover: "/img/covers/case-o-nova.jpg",
+      cover: "/img/thumbs/case-o-nova.jpg",
       pages: 11,
     },
     {
@@ -132,7 +146,7 @@ export const competitions = {
         label: "Full integrated solution",
         href: "/docs/samadhan-upay-full-solution.pdf",
       },
-      cover: "/img/covers/samadhan.jpg",
+      cover: "/img/thumbs/samadhan.jpg",
       pages: 7,
     },
   ],
@@ -150,7 +164,7 @@ export const projects = {
   aegis: {
     name: "AEGIS.os",
     tagline: "AI Financial Intelligence Platform",
-    period: "May – August 2026",
+    period: "June – August 2026",
     href: "https://aegis-os-silk.vercel.app",
     summary:
       "A Bloomberg Terminal costs about $24,000 a year, and it is a large part of why analysts inside big firms see what matters before everyone else. I wanted to read markets that way without the terminal, so I built my own.",
@@ -252,7 +266,7 @@ export const cv = {
       detail: "Integrated Programme in Management · Year III",
       period: "2024 – 2029",
     },
-    { place: "CFA Institute", detail: "Level I cleared · Level II candidate", period: "June 2026" },
+    { place: "CFA Institute", detail: "Level I passed", period: "May 2026" },
     { place: "SKP Vidya Vihar, Deoghar", detail: "Class XII · CBSE", period: "2024" },
     { place: "DAV Public School, Deoghar", detail: "Class X · CBSE", period: "2021" },
   ],

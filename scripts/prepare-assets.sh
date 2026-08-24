@@ -94,14 +94,36 @@ cover() { # <doc filename> <output slug> [footer-trim fraction]
   fi
 }
 
-cover "udgam-iitg-equity-research.pdf"                 "udgam-iitg" 0.07
-cover "case-chronicles-iiti.pdf"                       "case-chronicles" 0.07
-cover "case-o-nova-iimb.pdf"                           "case-o-nova" 0.07
-cover "casecon-abv-iiitm.pdf"                          "casecon" 0.07
-cover "samadhan-upay.pdf"                              "samadhan" 0.07
+# The five competition decks no longer need a page-one cover — Chapter III now
+# uses the purpose-made 16:9 thumbnails below. Only the documents still shown
+# as page images are rendered here.
 cover "how-to-read-an-annual-report.pdf"               "annual-report"
 cover "three-lessons-before-your-first-internship.pdf" "three-lessons"
 cover "harsh-aryan-cv.pdf"                             "cv"
+
+# ---------------------------------------------------------------------------
+# 2b. Case-competition thumbnails
+#
+# Purpose-made 16:9 artwork, used instead of the decks' first page. Normalised
+# to exactly 16:9 (a couple are supplied at 2:1) with the excess taken off the
+# right, where the decoration lives, so the left-aligned titles stay intact.
+# ---------------------------------------------------------------------------
+say "→ case thumbnails"
+mkdir -p "$IMG/thumbs"
+
+thumb() { # <source png> <output slug>
+  if [ -f "$SRC/Thumbnail/$1" ]; then
+    /opt/anaconda3/bin/python3 "$ROOT/scripts/img.py" thumb "$SRC/Thumbnail/$1" "$IMG/thumbs/$2.jpg"
+  else
+    echo "   !! missing thumbnail: $1" >&2
+  fi
+}
+
+thumb "Equity Research.png" "udgam-iitg"
+thumb "Case Chronicles.png" "case-chronicles"
+thumb "CaseCon.png"         "casecon"
+thumb "Case-O-Nova.png"     "case-o-nova"
+thumb "Samadhan 2025.png"   "samadhan"
 
 # ---------------------------------------------------------------------------
 # 3. Portrait — monochrome, three widths

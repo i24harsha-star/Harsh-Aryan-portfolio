@@ -37,6 +37,26 @@ def _fit(im, width):
     return im.resize((width, h), Image.LANCZOS)
 
 
+def thumb(src, out):
+    """Case-competition thumbnail, normalised to exactly 16:9.
+
+    The supplied artwork ranges from 1.777 to 2.009. The frame on the page is
+    aspect-[16/9], so anything wider is cropped by object-cover from BOTH sides
+    — and every one of these is left-aligned type with decorative marks on the
+    right. Excess width is therefore taken off the right only, which trims
+    decoration instead of clipping the title.
+    """
+    im = Image.open(src).convert("RGB")
+    target = 16 / 9
+    w, h = im.size
+    if w / h > target:
+        im = im.crop((0, 0, int(h * target), h))
+    elif w / h < target:
+        im = im.crop((0, 0, w, int(w / target)))
+    _save(_fit(im, 1600), out, quality=86)
+    print(f"   {os.path.basename(out)}  {im.size[0]}x{im.size[1]} -> 16:9")
+
+
 def cover(src, out, trim_footer="0"):
     """Page-one cover image.
 
@@ -71,10 +91,6 @@ def portrait(src, out_dir):
     print("   portrait-colour-1600.jpg")
 
 
-# The three photographs currently in the source folder, in display order.
-# Kept as an explicit list rather than a directory sweep so that removing a
-# photo from the source removes it from the site, and nothing stale is served
-# from a previous run.
 def background(src, out_dir):
     """Hero background plate.
 
@@ -93,6 +109,10 @@ def background(src, out_dir):
     print("   bg-hero-2400.jpg")
 
 
+# The three photographs currently in the source folder, in display order.
+# Kept as an explicit list rather than a directory sweep so that removing a
+# photo from the source removes it from the site, and nothing stale is served
+# from a previous run.
 EVENT_PHOTOS = [
     ("WhatsApp-Image-2025-09-04-at-09.10.20.png", "IIT Indore"),
     ("WhatsApp Image 2025-09-10 at 11.03.12 (1).jpeg", "Presenting to the panel"),
@@ -163,6 +183,7 @@ if __name__ == "__main__":
     mode = sys.argv[1]
     {
         "cover": cover,
+        "thumb": thumb,
         "portrait": portrait,
         "background": background,
         "photos": photos,

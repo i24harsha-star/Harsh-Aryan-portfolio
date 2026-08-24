@@ -4,9 +4,10 @@ import Image from "next/image";
 import ChapterHead from "./ChapterHead";
 import ScrollStack, { ScrollStackItem } from "./reactbits/ScrollStack";
 import { useGsapContext, gsap, EASE } from "@/lib/motion";
-import { competitions } from "@/data/content";
+import { competitions, chapterMeta } from "@/data/content";
 
 export default function Competitions() {
+  const { numeral, label } = chapterMeta("competitions");
   const scope = useGsapContext(({ self }) => {
     // The cards themselves are driven by ScrollStack, which owns their
     // `transform` and `filter` outright — animating the same card here would
@@ -54,8 +55,8 @@ export default function Competitions() {
     >
       <div className="shell">
         <ChapterHead
-          numeral="II"
-          label="Case Work"
+          numeral={numeral}
+          label={label}
           title={competitions.title}
           standfirst={competitions.standfirst}
         />
@@ -84,9 +85,12 @@ export default function Competitions() {
                     alt=""
                     fill
                     sizes="(max-width: 1024px) 100vw, 58vw"
-                    className="case-img object-cover grayscale transition-[filter,transform] duration-[1.2s] ease-[var(--ease)] group-hover:grayscale-0"
+                    /* No greyscale and no scrim: unlike the PDF page-one covers
+                       these are purpose-made dark artwork already in the site's
+                       register, and desaturating them throws away the one thing
+                       that distinguishes each competition. */
+                    className="case-img object-cover transition-transform duration-[1.2s] ease-[var(--ease)] group-hover:scale-[1.02]"
                   />
-                  <span className="absolute inset-0 bg-[var(--bg)]/55 transition-opacity duration-700 group-hover:opacity-0" />
                   <span className="absolute bottom-4 right-4 rounded-full border border-white/40 bg-black/70 px-3.5 py-1.5 text-[0.5625rem] tracking-[0.18em] uppercase">
                     View deck · {item.pages}pp
                   </span>

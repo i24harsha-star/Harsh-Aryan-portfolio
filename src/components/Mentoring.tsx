@@ -2,7 +2,7 @@
 
 import ChapterHead from "./ChapterHead";
 import { useGsapContext, gsap, EASE } from "@/lib/motion";
-import { mentoring } from "@/data/content";
+import { mentoring, chapterMeta } from "@/data/content";
 
 /**
  * The paid section.
@@ -17,6 +17,7 @@ const bookingLive = process.env.NEXT_PUBLIC_BOOKING_LIVE === "true";
 const calendly = process.env.NEXT_PUBLIC_CALENDLY_URL ?? "";
 
 export default function Mentoring() {
+  const { numeral, label } = chapterMeta("mentoring");
   const scope = useGsapContext(({ self }) => {
     gsap.from(self.querySelectorAll<HTMLElement>("[data-m]"), {
       y: 26,
@@ -47,8 +48,8 @@ export default function Mentoring() {
     >
       <div className="shell">
         <ChapterHead
-          numeral="V"
-          label="Mentoring"
+          numeral={numeral}
+          label={label}
           title={mentoring.title}
           standfirst={mentoring.standfirst}
         />

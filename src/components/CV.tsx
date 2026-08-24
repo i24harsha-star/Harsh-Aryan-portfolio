@@ -3,9 +3,10 @@
 import Image from "next/image";
 import ChapterHead from "./ChapterHead";
 import { useGsapContext, gsap, EASE } from "@/lib/motion";
-import { cv } from "@/data/content";
+import { cv, chapterMeta } from "@/data/content";
 
 export default function CV() {
+  const { numeral, label } = chapterMeta("cv");
   const scope = useGsapContext(({ self }) => {
     self.querySelectorAll<HTMLElement>(".cv-entry").forEach((row) => {
       gsap.from(row, {
@@ -41,7 +42,8 @@ export default function CV() {
   return (
     <section id="cv" ref={scope as React.RefObject<HTMLElement>} className="chapter">
       <div className="shell">
-        <ChapterHead numeral="IV" label="The Record" title={cv.title} />
+        <ChapterHead numeral={numeral}
+          label={label} title={cv.title} />
 
         <div className="mt-16 grid gap-12 lg:mt-24 lg:grid-cols-12 lg:gap-14">
           {/* Download panel */}

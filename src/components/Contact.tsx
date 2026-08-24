@@ -2,9 +2,10 @@
 
 import ChapterHead from "./ChapterHead";
 import { useGsapContext, gsap, EASE, countUp, formatCount } from "@/lib/motion";
-import { contact, site } from "@/data/content";
+import { contact, site, chapterMeta } from "@/data/content";
 
 export default function Contact() {
+  const { numeral, label } = chapterMeta("contact");
   const scope = useGsapContext(({ self }) => {
     self.querySelectorAll<HTMLElement>("[data-stat]").forEach((el) => {
       countUp(el, Number(el.dataset.stat), {
@@ -30,7 +31,8 @@ export default function Contact() {
       className="chapter pb-0"
     >
       <div className="shell">
-        <ChapterHead numeral="VI" label="Contact" title={contact.title} />
+        <ChapterHead numeral={numeral}
+          label={label} title={contact.title} />
 
         {/* Counters */}
         <dl className="mt-16 grid grid-cols-2 gap-x-8 gap-y-12 border-y border-[var(--line-soft)] py-14 lg:mt-24 lg:grid-cols-4">

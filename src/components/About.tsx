@@ -4,9 +4,10 @@ import Image from "next/image";
 import ChapterHead from "./ChapterHead";
 import ScrollVelocity from "./reactbits/ScrollVelocity";
 import { useGsapContext, gsap, EASE, splitWords } from "@/lib/motion";
-import { about } from "@/data/content";
+import { about, chapterMeta } from "@/data/content";
 
 export default function About() {
+  const { numeral, label } = chapterMeta("about");
   const scope = useGsapContext(({ self }) => {
     // Body copy reveals word by word as it enters — slow enough to read into.
     self.querySelectorAll<HTMLElement>("[data-words]").forEach((p) => {
@@ -60,7 +61,8 @@ export default function About() {
       className="chapter"
     >
       <div className="shell">
-        <ChapterHead numeral="I" label="Who I Am" title={about.title} />
+        <ChapterHead numeral={numeral}
+          label={label} title={about.title} />
 
         <div className="mt-16 grid gap-12 lg:mt-24 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5 lg:col-start-1">
