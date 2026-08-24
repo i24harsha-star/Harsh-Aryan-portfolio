@@ -352,10 +352,4 @@ export const mentoring = {
 
 export const contact = {
   title: ["Let’s", "talk"],
-  stats: [
-    { value: 5, label: "National finals reached", suffix: "" },
-    { value: 1.7, label: "Photograph views", suffix: "M+", decimals: 1 },
-    { value: 3700, label: "Following the work", suffix: "+" },
-    { value: 2000, label: "Articles classified by AEGIS", suffix: "+" },
-  ],
 } as const;

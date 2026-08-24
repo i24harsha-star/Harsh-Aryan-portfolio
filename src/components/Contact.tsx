@@ -1,19 +1,12 @@
 "use client";
 
 import ChapterHead from "./ChapterHead";
-import { useGsapContext, gsap, EASE, countUp, formatCount } from "@/lib/motion";
+import { useGsapContext, gsap, EASE } from "@/lib/motion";
 import { contact, site, chapterMeta } from "@/data/content";
 
 export default function Contact() {
   const { numeral, label } = chapterMeta("contact");
   const scope = useGsapContext(({ self }) => {
-    self.querySelectorAll<HTMLElement>("[data-stat]").forEach((el) => {
-      countUp(el, Number(el.dataset.stat), {
-        decimals: Number(el.dataset.decimals ?? 0),
-        suffix: el.dataset.suffix ?? "",
-      });
-    });
-
     gsap.from(self.querySelectorAll<HTMLElement>("[data-c]"), {
       y: 24,
       opacity: 0,
@@ -34,30 +27,16 @@ export default function Contact() {
         <ChapterHead numeral={numeral}
           label={label} title={contact.title} />
 
-        {/* Counters */}
-        <dl className="mt-16 grid grid-cols-2 gap-x-8 gap-y-12 border-y border-[var(--line-soft)] py-14 lg:mt-24 lg:grid-cols-4">
-          {contact.stats.map((s) => (
-            <div key={s.label}>
-              <dd
-                className="mono text-[clamp(2.25rem,4.6vw,4rem)] font-extralight leading-none"
-                data-stat={s.value}
-                data-suffix={s.suffix}
-                data-decimals={"decimals" in s ? s.decimals : 0}
-              >
-                {formatCount(s.value, "decimals" in s ? s.decimals : 0, s.suffix)}
-              </dd>
-              <dt className="mt-4 text-xs leading-snug text-fg-faint">{s.label}</dt>
-            </div>
-          ))}
-        </dl>
-
-        <div className="c-grid mt-20 grid gap-12 lg:grid-cols-12 lg:gap-14">
+        <div className="c-grid mt-16 grid lg:mt-24 gap-12 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-6">
             <div data-c className="eyebrow mb-6">Get in touch</div>
             <a
               data-c
               href={`mailto:${site.email}`}
-              className="block text-[clamp(1.25rem,3.2vw,2.5rem)] font-extralight tracking-[-0.02em] transition-opacity duration-500 hover:opacity-65"
+              /* Hover shifts colour, not opacity. GSAP animates opacity on this
+                 element via [data-c]; a CSS transition on the same property
+                 fought it and left the address stuck at opacity 0. */
+              className="block text-[clamp(1.25rem,3.2vw,2.5rem)] font-extralight tracking-[-0.02em] transition-colors duration-500 hover:text-[var(--accent)]"
             >
               {site.email}
             </a>
