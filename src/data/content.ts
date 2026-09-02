@@ -11,9 +11,10 @@ export const site = {
   pronouns: "He/Him",
   roles: ["Equity Research", "Financial Modelling", "Capital Markets", "IIM Indore"],
   location: "Indore, Madhya Pradesh, India",
-  // NEEDS INPUT — confirm which address should be public. This is the one already
-  // printed on the CV; a personal address may be preferable to the institute one.
-  email: "i24harsha@iimidr.ac.in",
+  // The address he now leads with on his CV — a dedicated professional one,
+  // which also settles the earlier question of whether to publish the institute
+  // address instead.
+  email: "harsh.aryan.finance@gmail.com",
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/harsh-aryan-970b2b25a/" },
     { label: "Substack", href: "https://harsharyan1.substack.com" },
@@ -58,8 +59,8 @@ export const about = {
     "I’m still becoming. And perhaps that’s the part I find most interesting.",
   ],
   facts: [
-    { label: "Programme", value: "Integrated Programme in Management, IIM Indore · Year III" },
-    { label: "Charter progress", value: "CFA Level I passed · May 2026" },
+    { label: "Programme", value: "IPM — BA (Foundations of Management), IIM Indore · May 2027" },
+    { label: "Charter progress", value: "CFA Level II candidate · Level I passed 2026" },
     { label: "Focus", value: "Investment banking · Equity research · PE/VC · Wealth management" },
     { label: "Based in", value: "Indore, Madhya Pradesh, India" },
   ],
@@ -260,65 +261,113 @@ export const cv = {
   title: ["The", "record"],
   file: "/docs/harsh-aryan-cv.pdf",
   cover: "/img/covers/cv.jpg",
+
   education: [
     {
       place: "Indian Institute of Management, Indore",
-      detail: "Integrated Programme in Management · Year III",
-      period: "2024 – 2029",
+      detail: "IPM — Bachelor of Arts (Foundations of Management)",
+      period: "May 2027",
+      note: "Coursework: Foundations of Company Accounts · Bayesian Statistics · Monetary Policy · Time Series Analysis",
     },
-    { place: "CFA Institute", detail: "Level I passed", period: "May 2026" },
-    { place: "SKP Vidya Vihar, Deoghar", detail: "Class XII · CBSE", period: "2024" },
-    { place: "DAV Public School, Deoghar", detail: "Class X · CBSE", period: "2021" },
+    {
+      place: "CFA Institute",
+      detail: "Level II candidate · Level I passed, May 2026",
+      period: "May 2027",
+    },
   ],
+
+  achievements: [
+    { result: "National Finalist", event: "Udgam’26: Equity Research Challenge 2025-26", host: "IIT Guwahati", year: "2026" },
+    { result: "National Runner-up", event: "E-Summit’25: Case Chronicle Case Competition", host: "IIT Indore", year: "2025" },
+    { result: "National Finalist", event: "SMASH’25: Case-O-Nova 7.0 Case Competition", host: "IIM Bangalore", year: "2025" },
+    { result: "National Finalist", event: "CaseCon: Techno-Cultural Fest Case Competition", host: "ABV-IIITM Gwalior", year: "2025" },
+    { result: "National Finalist", event: "Samadhan 2025 — National Social Innovation Challenge", host: "UPAY", year: "2025" },
+  ],
+
+  // Grouped exactly as the resume groups them: paid work, project work, and
+  // what he runs. Flattening these into one "experience" list, as the previous
+  // version did, made a live VC project read the same as founding a society.
   experience: [
     {
-      place: "Access Livelihoods",
-      role: "Development Finance Intern",
-      period: "April – June 2026",
-      points: [
-        "Worked directly with the COO on governance, corporate restructuring and capital formation across multiple entities.",
-        "Analysed India’s Social Stock Exchange framework as an alternative capital-raising mechanism — securing a follow-on paid live project on SSE registration.",
-        "Built a gratuity liability valuation model to project long-term employee benefit obligations.",
-        "Executed documentation for renewal of a ₹17.67 lakh performance bank guarantee.",
+      group: "Professional experience",
+      items: [
+        {
+          place: "Access Livelihoods",
+          role: "Intern — Development Finance",
+          where: "Hyderabad, India",
+          period: "April – June 2026",
+          points: [
+            "Executed capital restructuring, shareholding realignment, governance and Social Stock Exchange initiatives with the COO; evaluated institutional shareholder eligibility and strategic fit across multiple Access Livelihoods entities.",
+            "Analysed audited financial statements; developed a gratuity liability valuation model; coordinated DEMAT conversion and statutory compliance; executed renewal of a ₹17.67 lakh Performance Bank Guarantee with banking stakeholders.",
+          ],
+        },
       ],
     },
     {
-      place: "Cup-Ji",
-      role: "Growth Strategy · Live Project",
-      period: "September 2025 – February 2026",
-      points: [
-        "Formulated a data-driven market entry strategy for a vending machine vertical.",
-        "Ran competitive analysis across 10+ industry leaders on 25+ strategic variables.",
+      group: "Projects",
+      items: [
+        {
+          place: "434 VC",
+          role: "Investment Analyst — Live Project",
+          where: "New York, United States",
+          period: "August 2026 – Present",
+          points: [
+            "Conducted market research and competitive analysis across venture capital, AI, technology and funding markets.",
+            "Supported startup screening, due diligence, investment notes and deal-pipeline research across emerging opportunities.",
+          ],
+        },
+        {
+          place: "AEGIS.os",
+          role: "AI-assisted Newstracker — Personal Project",
+          where: "",
+          period: "June – August 2026",
+          points: [
+            "Built an AI-assisted financial intelligence platform synthesising market data, news and institutional research to track investment themes, IPOs, M&A and PE/VC activity across ~2,000 classified articles and 30 macro series.",
+          ],
+        },
+        {
+          place: "Cup-Ji",
+          role: "Growth Strategy Project — Live Project",
+          where: "Mumbai, India",
+          period: "September 2025 – February 2026",
+          points: [
+            "Formulated a data-driven market entry strategy through competitive analysis of 10+ industry leaders across 25+ metrics.",
+            "Synthesised benchmarking, segment and location insights with a 10+ member team into a structured launch plan.",
+          ],
+        },
       ],
     },
     {
-      place: "Endurance-I, IIM Indore",
-      role: "Founder",
-      period: "December 2024",
-      points: [
-        "Built and led a 500+ member fitness community; organised two flagship competitions.",
-        "Designed 350+ customised training plans and mentored three junior associates.",
+      group: "Leadership",
+      items: [
+        {
+          place: "Endurance-I, IIM Indore",
+          role: "Founder",
+          where: "Madhya Pradesh, India",
+          period: "December 2024 – Present",
+          points: [
+            "Founded and scaled a 500+ member fitness community; organised two flagship competitions, developed 350+ customised workout plans, mentored three associates and collaborated with the institute administration on facility improvements.",
+          ],
+        },
       ],
-    },
-    {
-      place: "Unsplash",
-      role: "Photographer",
-      period: "2021 – present",
-      points: ["Photography with 1.7 million+ user engagement."],
     },
   ],
+
   certifications: [
-    "CFA Program Level I — CFA Institute, 2026",
-    "Bloomberg Finance Fundamentals — Bloomberg, 2026",
-    "Data Visualization — IIM Indore, 2025",
-    "Equity Markets Analyst — Finlatics, 2025",
-    "Data Science, ML, DL & NLP Bootcamp — Udemy, 2025",
+    "Bloomberg BMC",
+    "Spreadsheet Analysis",
+    "ESG & Finance Fundamentals",
+    "Equity Markets Analyst — Finlatics",
   ],
+
   skills: [
-    { group: "Finance", items: "Financial modelling · DCF valuation · Financial statement analysis · Equity research · Portfolio analysis" },
-    { group: "Databases", items: "Bloomberg Terminal · S&P Capital IQ · Capitaline · CMIE ProwessDX · ACE Equity Nxt · CEIC · Euromonitor" },
-    { group: "Analytics", items: "Python (Pandas, NumPy) · R · Advanced Excel" },
+    {
+      group: "Finance",
+      items: "Financial modelling · DCF valuation · Accretion/dilution analysis · LBO analysis · Equity research · Pitch books · Fundamental analysis",
+    },
+    { group: "Tools", items: "Bloomberg Terminal · S&P Capital IQ · Microsoft Office (VBA, Solver) · Claude Code" },
     { group: "Languages", items: "English · Hindi · French (A1)" },
+    { group: "Interests", items: "Fitness · Powerlifting · Photography · Modelling" },
   ],
 } as const;
 

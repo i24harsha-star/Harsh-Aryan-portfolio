@@ -106,33 +106,63 @@ export default function CV() {
                       <span className="mono text-xs text-fg-faint">{e.period}</span>
                     </div>
                     <p className="mt-1 text-sm text-fg-muted">{e.detail}</p>
+                    {"note" in e && e.note && (
+                      <p className="mt-2 text-xs leading-relaxed text-fg-faint">{e.note}</p>
+                    )}
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="eyebrow mb-8 mt-16">Experience</div>
-            <ul className="space-y-12">
-              {cv.experience.map((e) => (
-                <li key={e.place} className="cv-entry border-t border-[var(--line-soft)] pt-7">
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                    <h3 className="text-[clamp(1.125rem,1.6vw,1.375rem)] font-extralight">
-                      {e.place}
-                    </h3>
-                    <span className="mono text-xs text-fg-faint">{e.period}</span>
+            <div className="eyebrow mb-8 mt-16">Achievements</div>
+            <ul className="space-y-4">
+              {cv.achievements.map((a) => (
+                <li
+                  key={a.event}
+                  className="cv-entry flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-t border-[var(--line-soft)] pt-4"
+                >
+                  <div className="min-w-0">
+                    <span className="text-sm">{a.result}</span>
+                    <span className="text-sm text-fg-muted"> — {a.event}</span>
+                    <span className="block text-xs text-fg-faint">{a.host}</span>
                   </div>
-                  <p className="mt-1.5 text-sm text-fg-muted">{e.role}</p>
-                  <ul className="mt-5 space-y-2.5">
-                    {e.points.map((p) => (
-                      <li key={p} className="flex gap-3 text-sm font-light leading-relaxed text-fg-muted">
-                        <span className="mt-2 size-1 shrink-0 rounded-full bg-white/35" />
-                        {p}
-                      </li>
-                    ))}
-                  </ul>
+                  <span className="mono text-xs text-fg-faint">{a.year}</span>
                 </li>
               ))}
             </ul>
+
+            {cv.experience.map((section) => (
+              <div key={section.group}>
+                <div className="eyebrow mb-8 mt-16">{section.group}</div>
+                <ul className="space-y-12">
+                  {section.items.map((e) => (
+                    <li key={e.place} className="cv-entry border-t border-[var(--line-soft)] pt-7">
+                      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                        <h3 className="text-[clamp(1.125rem,1.6vw,1.375rem)] font-extralight">
+                          {e.place}
+                        </h3>
+                        <span className="mono text-xs text-fg-faint">{e.period}</span>
+                      </div>
+                      <div className="mt-1.5 flex flex-wrap items-baseline justify-between gap-x-6">
+                        <p className="text-sm text-fg-muted">{e.role}</p>
+                        {e.where && <p className="text-xs text-fg-faint">{e.where}</p>}
+                      </div>
+                      <ul className="mt-5 space-y-2.5">
+                        {e.points.map((pt) => (
+                          <li
+                            key={pt}
+                            className="flex gap-3 text-sm font-light leading-relaxed text-fg-muted"
+                          >
+                            <span className="mt-2 size-1 shrink-0 rounded-full bg-[var(--accent)]/60" />
+                            {pt}
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       </div>
