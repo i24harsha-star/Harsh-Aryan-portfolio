@@ -5,6 +5,29 @@ import Lenis from "lenis";
 import { gsap, ScrollTrigger, registerGsap, prefersReducedMotion } from "@/lib/motion";
 
 /**
+ * Move keyboard focus to an in-page anchor's target.
+ *
+ * A fragment link normally does this for free, but every anchor on this site is
+ * intercepted and preventDefault()ed so Lenis can own the scroll — which
+ * silently cancels the focus move as well. The result was a skip link that
+ * scrolled the page and left focus behind it in the header, and a chapter index
+ * that a keyboard user could activate without ever arriving anywhere.
+ *
+ * `preventScroll` is not optional: without it the browser's own jump fights
+ * Lenis's tween and the page lurches.
+ */
+function focusTarget(el: HTMLElement) {
+  if (!el.hasAttribute("tabindex")) {
+    // Sections are not focusable. Make this one focusable just long enough to
+    // receive focus, then take it back out of the tab order on blur so it does
+    // not become a phantom stop for everyone tabbing through the page.
+    el.setAttribute("tabindex", "-1");
+    el.addEventListener("blur", () => el.removeAttribute("tabindex"), { once: true });
+  }
+  el.focus({ preventScroll: true });
+}
+
+/**
  * Lenis smooth scrolling, driven off GSAP's ticker.
  *
  * The two have to share one clock: if Lenis runs its own RAF loop while
@@ -15,7 +38,22 @@ export default function SmoothScroll() {
   useEffect(() => {
     document.documentElement.classList.remove("no-js");
 
-    if (prefersReducedMotion()) return;
+    /**
+     * Focus management runs whether or not the motion layer does — a reader with
+     * reduced motion uses the skip link and the chapter index too.
+     */
+    const onAnchorFocus = (e: MouseEvent) => {
+      const link = (e.target as HTMLElement)?.closest?.('a[href^="#"]');
+      const id = link?.getAttribute("href");
+      if (!id || id === "#") return;
+      const target = document.querySelector<HTMLElement>(id);
+      if (target) focusTarget(target);
+    };
+    document.addEventListener("click", onAnchorFocus);
+
+    if (prefersReducedMotion()) {
+      return () => document.removeEventListener("click", onAnchorFocus);
+    }
 
     registerGsap();
 
@@ -38,7 +76,8 @@ export default function SmoothScroll() {
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
-    // Anchor links have to go through Lenis, not native scrolling.
+    // Anchor links have to go through Lenis, not native scrolling. Focus is
+    // handled separately by onAnchorFocus above, which still runs for these.
     const onClick = (e: MouseEvent) => {
       const link = (e.target as HTMLElement)?.closest?.('a[href^="#"]');
       if (!link) return;
@@ -83,6 +122,7 @@ export default function SmoothScroll() {
     document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
     return () => {
+      document.removeEventListener("click", onAnchorFocus);
       document.removeEventListener("click", onClick);
       window.removeEventListener("scroll", onNativeScroll);
       window.removeEventListener("load", onLoad);

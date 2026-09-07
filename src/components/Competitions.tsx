@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import ChapterHead from "./ChapterHead";
 import ScrollStack, { ScrollStackItem } from "./reactbits/ScrollStack";
 import { useGsapContext, gsap, EASE } from "@/lib/motion";
@@ -61,6 +62,43 @@ export default function Competitions() {
           standfirst={competitions.standfirst}
         />
 
+        {/* The notice sits BEFORE the decks, not after them and not only in the
+            footer.
+
+            Several of these entries contain named listed companies with market
+            prices, target prices and portfolio weightings, because that is what
+            the competition briefs asked for. Published unqualified on a site
+            that also sells a paid service, that reads like investment
+            recommendations from an unregistered person — the exact pattern SEBI
+            has been acting against. The decks' own last pages already say they
+            are academic and that the author is not SEBI-registered; the problem
+            was that a reader met the recommendation first and the caveat on page
+            twenty, if at all. */}
+        <aside
+          aria-labelledby="case-work-notice"
+          className="mt-14 max-w-[68ch] border-l-2 border-[var(--accent)] pl-6"
+        >
+          <h3 id="case-work-notice" className="eyebrow mb-3">
+            Before you open these
+          </h3>
+          <p className="text-sm font-light leading-relaxed text-fg-muted">
+            These are student competition entries, written to a brief and a deadline and
+            never updated since. Some contain company names, share prices and price targets
+            — all of them calculated on the date of submission and stale ever since.{" "}
+            <strong className="font-normal text-fg">
+              None of it is investment advice or a recommendation
+            </strong>
+            , and I am not registered with SEBI in any capacity.{" "}
+            <Link
+              href="/disclaimer"
+              className="underline decoration-[var(--line-strong)] underline-offset-4 transition-colors duration-500 hover:text-[var(--accent)]"
+            >
+              Full disclaimer
+            </Link>
+            .
+          </p>
+        </aside>
+
         {/* The five cases pin one behind another and stack, each settling a
             little smaller and softer than the one in front. */}
         <ScrollStack itemDistance={110} itemStackDistance={22} baseScale={0.88}>
@@ -78,7 +116,7 @@ export default function Competitions() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="case-frame group relative block aspect-[16/9] overflow-hidden bg-bg-raised"
-                  aria-label={`Open the ${item.event} deck (PDF, ${item.pages} pages)`}
+                  aria-label={`Open the ${item.event} deck (PDF, ${item.pages} pages, opens in a new tab)`}
                 >
                   <Image
                     src={item.cover}
@@ -119,6 +157,10 @@ export default function Competitions() {
                     className="border-b border-line pb-1 text-[0.6875rem] tracking-[0.16em] uppercase transition-colors duration-500 hover:border-[var(--accent)] hover:text-[var(--accent)]"
                   >
                     Open deck
+                    <span className="sr-only">
+                      {" "}
+                      for {item.event} (PDF, {item.pages} pages, opens in a new tab)
+                    </span>
                   </a>
                   {"extraDoc" in item && item.extraDoc && (
                     <a
@@ -128,6 +170,7 @@ export default function Competitions() {
                       className="border-b border-line pb-1 text-[0.6875rem] tracking-[0.16em] uppercase text-fg-muted transition-colors duration-500 hover:border-white hover:text-fg"
                     >
                       {item.extraDoc.label}
+                      <span className="sr-only"> (PDF, opens in a new tab)</span>
                     </a>
                   )}
                 </div>

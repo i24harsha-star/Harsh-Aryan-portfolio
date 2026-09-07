@@ -3,11 +3,12 @@
 import Image from "next/image";
 import ChapterHead from "./ChapterHead";
 import ScrollVelocity from "./reactbits/ScrollVelocity";
-import { useGsapContext, gsap, EASE, splitWords } from "@/lib/motion";
+import { useGsapContext, gsap, EASE, splitWords, useReducedMotion } from "@/lib/motion";
 import { about, chapterMeta } from "@/data/content";
 
 export default function About() {
   const { numeral, label } = chapterMeta("about");
+  const reducedMotion = useReducedMotion();
   const scope = useGsapContext(({ self }) => {
     // Body copy reveals word by word as it enters — slow enough to read into.
     self.querySelectorAll<HTMLElement>("[data-words]").forEach((p) => {
@@ -69,7 +70,7 @@ export default function About() {
             <div className="portrait-frame relative aspect-[3/4] overflow-hidden">
               <Image
                 src="/img/portrait-colour-1600.jpg"
-                alt="Harsh Aryan"
+                alt="Harsh Aryan, photographed in colour, three-quarter length"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
                 className="portrait-img object-cover"
@@ -101,14 +102,47 @@ export default function About() {
 
       {/* Full-bleed marquee of institutions.
           Velocity-reactive: it drifts on its own, accelerates with the scroll,
-          and reverses when you scroll back up. */}
+          and reverses when you scroll back up.
+
+          Two accessibility problems had to be solved without losing the effect.
+
+          The marquee paints FOUR copies of the same string so the loop can wrap
+          seamlessly, which meant a screen reader read the whole list of
+          institutions four times over. It is now aria-hidden, with one real list
+          carrying the same names to assistive technology.
+
+          It also animated forever regardless of the reader's motion preference —
+          the one piece of motion on the site that ignored ADR-6. Under reduced
+          motion it renders as a static row instead. */}
       <div className="mt-20 border-y border-[var(--line-soft)] py-6 lg:mt-28">
-        <ScrollVelocity
-          texts={[about.marks.join("　·　")]}
-          velocity={26}
-          numCopies={4}
-          className="whitespace-nowrap pr-14 text-[0.6875rem] tracking-[0.2em] uppercase text-fg-faint"
-        />
+        {/* A bare row of institution names reads as a logo wall — the visual
+            grammar of "these organisations endorse me". None of them do: some
+            taught him, one certified him, several hosted competitions he entered.
+            A label costs one line and removes the implication. */}
+        <h3 className="eyebrow mb-4 px-[var(--gutter)]">
+          Institutions named in this record — studied at, worked with, competed at, or
+          certified by
+        </h3>
+        <ul className="sr-only">
+          {about.marks.map((m) => (
+            <li key={m}>{m}</li>
+          ))}
+        </ul>
+
+        <div aria-hidden="true">
+          {reducedMotion ? (
+            <p className="truncate px-[var(--gutter)] text-[0.6875rem] tracking-[0.2em] uppercase text-fg-faint">
+              {about.marks.join("　·　")}
+            </p>
+          ) : (
+            <ScrollVelocity
+              texts={[about.marks.join("　·　")]}
+              velocity={26}
+              numCopies={4}
+              className="whitespace-nowrap pr-14 text-[0.6875rem] tracking-[0.2em] uppercase text-fg-faint"
+            />
+          )}
+        </div>
       </div>
     </section>
   );

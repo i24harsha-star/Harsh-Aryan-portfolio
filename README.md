@@ -21,6 +21,10 @@ Other commands:
 |---|---|
 | `npm run build` | Production build |
 | `npm run lint` | ESLint |
+| `npm run check:legal` | Lists the business/policy details still missing from `src/data/legal.ts` |
+| `npm run check:contrast` | Measures the design tokens against WCAG 2.2 AA |
+| `npm run check:privacy` | Confirms the built site still matches what `/cookies` promises (run after `build`) |
+| `npm run check:pii` | Confirms no published PDF carries someone else's email address |
 | `./scripts/prepare-assets.sh` | Rebuild everything in `public/` from the source assets |
 
 ### `?static=1`
@@ -37,6 +41,44 @@ driven by it, so without this the page looks blank in screenshots.
 Almost everything is in **`src/data/content.ts`** — headings, body copy, the competition list,
 project descriptions, CV entries, the mentoring offer. Edit that file rather than the
 components.
+
+Everything legal and commercial is in **`src/data/legal.ts`** — the business details, the
+grievance officer, the session's price and terms, and the list of third parties that will
+receive customer data once payments go live.
+
+Both files follow the same rule: **anything still awaiting Harsh's decision is left empty
+rather than filled with plausible text.** In `content.ts` that is the string `NEEDS INPUT`;
+in `legal.ts` it is `null`, and the page renders a conspicuous dashed placeholder wherever
+one appears. `npm run check:legal` lists what is outstanding and what each item blocks.
+
+---
+
+## Legal and compliance
+
+The site has eight policy pages at `/privacy`, `/terms`, `/refunds`, `/cookies`,
+`/disclaimer`, `/pricing`, `/delivery` and `/contact`, linked from a footer on every route.
+Three things about them are worth knowing before editing anything:
+
+**There is no cookie banner because there are no cookies.** The build sets none, loads no
+third-party script, embeds nothing, and self-hosts Inter at build time via `next/font`, so
+no visitor request ever reaches Google. `/cookies` states this to every reader as a fact.
+`npm run check:privacy` re-checks it against the production output and fails if an
+analytics package, an embed or an off-origin script appears — because at that point the
+published policy would be a false statement about how personal data is handled, and a
+consent mechanism would probably be required.
+
+**`/disclaimer` is load-bearing, not boilerplate.** The competition decks contain named
+listed companies with market prices and price targets. Published beside a paid service by
+someone not registered with SEBI, that needs the caveat in front of the work rather than on
+page twenty of a PDF. Chapter III carries a notice above the decks and the footer carries a
+one-line version.
+
+**Published PDFs are checked for other people's contact details.**
+`scripts/redact-pdf.py` finds email addresses — by OCR where a page is a flat image, which
+is how five of the decks are built — and destroys the pixels of any address that is not
+Harsh's own. It runs inside `prepare-assets.sh`, and again in `--check` mode at the end of
+it, so regenerating the assets cannot quietly republish a teammate's address. His own
+details are deliberately left alone; that is his call to make.
 
 Anything still awaiting a decision is marked `NEEDS INPUT` in that file.
 

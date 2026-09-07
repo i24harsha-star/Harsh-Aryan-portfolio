@@ -51,6 +51,50 @@ export default function IncomeQualityChart() {
 
   return (
     <div ref={scope as React.RefObject<HTMLDivElement>} className="space-y-12">
+      {/* The dumbbells encode average and median as two dots on a line, and
+          neither number appears anywhere in text — only the gap between them
+          does, in the right-hand column. A reader who cannot see the dots was
+          getting a company name and a difference with nothing to difference.
+
+          A visually-hidden table is the standard remedy: identical data, no
+          visual cost, and it lets a screen reader move through it cell by cell
+          rather than trying to narrate a picture. */}
+      <table className="sr-only">
+        <caption>
+          Average versus median net profit to cash flow from operations (NP/CFO) over twelve
+          years, by company. A small gap between the two means earnings are steady; a large
+          gap means the average is being pulled by years that do not repeat.
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Company</th>
+            <th scope="col">Group</th>
+            <th scope="col">Average NP/CFO</th>
+            <th scope="col">Median NP/CFO</th>
+            <th scope="col">Gap</th>
+          </tr>
+        </thead>
+        <tbody>
+          {groups.flatMap((g) =>
+            g.companies
+              .filter((c) => c.average !== null && c.median !== null)
+              .map((c) => (
+                <tr key={`${g.label}-${c.name}`}>
+                  <th scope="row">{c.name}</th>
+                  <td>
+                    {g.label === "Top 5" ? "Highest earnings quality" : "Lowest earnings quality"}
+                  </td>
+                  <td>{c.average?.toFixed(2)}</td>
+                  <td>{c.median?.toFixed(2)}</td>
+                  <td>{c.difference !== null ? c.difference.toFixed(2) : "not available"}</td>
+                </tr>
+              ))
+          )}
+        </tbody>
+      </table>
+
+      {/* The visual chart repeats what the table above already said. */}
+      <div aria-hidden="true" className="space-y-12">
       {groups.map((g) => (
         <div key={g.label}>
           <div className="eyebrow mb-6">
@@ -109,6 +153,7 @@ export default function IncomeQualityChart() {
           <span className="size-2 rounded-full border border-white" /> Median NP/CFO
         </span>
         <span>Right column — the gap between them</span>
+      </div>
       </div>
     </div>
   );

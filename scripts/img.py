@@ -165,10 +165,24 @@ def photos(src_dir, out_dir):
 
 
 def work(src_dir, out_dir):
-    # Proof-of-result screenshots that are Harsh's own.
-    wanted = {
-        "Equity Research | IITG/Unstop result.png": "udgam-result.jpg",
-    }
+    """Proof-of-result screenshots.
+
+    Currently empty, deliberately.
+
+    This used to publish "Unstop result.png" as udgam-result.jpg. That
+    screenshot is a leaderboard: alongside Harsh's own row it carries the full
+    names and institutions of nine other competitors, none of whom agreed to
+    appear on his website, plus Unstop's own copyright notice. It was also not
+    referenced by any component — but anything written into public/ is served,
+    so it was reachable at a public URL by anyone who guessed or crawled it.
+
+    Publishing other people's personal data to prove your own result is not a
+    trade worth making, and it was buying nothing here because nothing linked to
+    it. If a proof-of-result image is ever wanted, crop it to Harsh's own row
+    first, then add it back to `wanted` below.
+    """
+    wanted = {}
+
     for rel, out in wanted.items():
         p = os.path.join(src_dir, rel)
         if not os.path.exists(p):
@@ -177,6 +191,9 @@ def work(src_dir, out_dir):
         im = Image.open(p).convert("RGB")
         _save(_mono(_fit(im, 1400), contrast=1.05), os.path.join(out_dir, out))
         print(f"   {out}")
+
+    if not wanted:
+        print("   (none — see the docstring in scripts/img.py:work)")
 
 
 if __name__ == "__main__":

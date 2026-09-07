@@ -162,12 +162,42 @@ build, so an import should succeed with all defaults.
    showcases with live charts. Left deliberately (a showcase may hold more than a one-page
    CV), but confirm that is intended.
 
-5. **Mentoring is not live and cannot be** until he decides: session length, refund window,
-   cancellation/reschedule terms, no-show policy. `content.ts → mentoring.duration` is
-   still literally `"NEEDS INPUT"`.
+5. **Mentoring is not live and cannot be** until he decides four things. The policies are
+   now written and drafted conservatively in the customer's favour, but two numbers are
+   still his:
+   - **session length** — `legal.ts → sessionTerms.durationMinutes`, and
+     `content.ts → mentoring.duration` which is still literally `"NEEDS INPUT"`;
+   - **scheduling window** — how soon after paying a session can actually happen
+     (`legal.ts → sessionTerms.schedulingWindow`).
+   The refund window (24h), reschedule allowance and no-show rule are drafted and need
+   only his sign-off. Run `npm run check:legal` for the live list.
 
-6. **Four legal pages do not exist** — Terms, Privacy, Cancellation & Refunds, Contact Us.
-   Razorpay requires all four to activate an account. This blocks payments entirely.
+6. **Legal pages now exist** — eight of them, at `/privacy`, `/terms`, `/refunds`,
+   `/cookies`, `/disclaimer`, `/pricing`, `/delivery`, `/contact`. Razorpay's activation
+   review asks for six (shipping, contact, pricing, terms, privacy, refunds); all six are
+   covered. **Two business details still block activation**: a postal address and a phone
+   number (`legal.ts → business.address` / `.phone`). Both render a visible dashed
+   placeholder until he supplies them — deliberately, so an unfinished policy cannot ship
+   quietly.
+
+7. **`about.facts` no longer says "CFA Level II candidate".** His CV does say it, but CFA
+   Institute's trademark guidance is explicit that passing Level I does *not* confer
+   candidate status — only registering for Level II does — and that progress must be
+   described factually. The site now says "Passed Level I of the CFA® Program (2026)",
+   which is true either way. **If he is actually registered for Level II, the candidate
+   line can go back.** Ask him. (This is the same claim §14 says was once inferred and
+   removed; it came back via the CV rewrite.)
+
+8. **The UDGAM equity research deck contains live-looking stock recommendations.**
+   Twenty pages, roughly nine named listed Indian securities, each with a current market
+   price and a target price ("CMP: INR 919 / TP: INR 1,300"), presented as a model fund
+   with a SEBI-style risk-o-meter. It is genuine competition work and its own last page
+   already says the author is not SEBI-registered and that it is an academic project —
+   but the *website* said nothing, so a reader met the recommendations first and the
+   caveat on page twenty if ever. Chapter III now carries a notice above the decks, the
+   footer carries a one-line version, and `/disclaimer` carries the full text.
+   **Still his decision:** whether to keep publishing a deck with price targets on named
+   stocks at all while also selling a paid service. See "Legal & compliance" below.
 
 7. **Mobile chapter-nav tap targets are 36×44px.** Height passes the 44px guideline, width
    does not. Matches the reference site's own treatment; left as-is deliberately.
@@ -366,9 +396,13 @@ form. Locking it properly needs a server-side webhook flow.
 2. **Ask whether the scroll glitch is gone.** Unverifiable from here.
 3. **Settle the Chapter I heading** (§6.1) — a one-line change.
 4. **Decide on `434 VC` in Chapter IV** (§6.3).
-5. When he supplies session length + refund/cancellation terms: **write the four legal
-   pages**, link them in the footer, and hand him the URLs for Razorpay KYC.
+5. ~~Write the four legal pages~~ — **done**, eight pages, linked from a footer that now
+   appears on every route. Outstanding before Razorpay KYC: postal address, phone,
+   session length, scheduling window. `npm run check:legal` lists them.
 6. Delete the merged `hero-background-and-tagline` branch, local and remote.
+7. **Ask him about the four decisions in §6.5–6.8** — they are the only things still
+   blocking payments, and three of them touch his identity or his money, so they are not
+   for an agent to decide.
 
 ---
 
@@ -426,6 +460,107 @@ no imagery for its anchor project); more Substack essays as he writes them.
 
 **Possible later:** server-side Razorpay webhook issuing one-time booking links; a custom
 domain; per-case detail pages if the case work outgrows the stack.
+
+---
+
+## 15. Legal & Compliance — what was done, and what is still his
+
+Added in the legal/accessibility pass. Read this before touching anything in
+`src/app/*/page.tsx`, `src/data/legal.ts` or `public/docs/`.
+
+### The pages
+Eight, all static server components with no GSAP: `/privacy`, `/terms`, `/refunds`,
+`/cookies`, `/disclaimer`, `/pricing`, `/delivery`, `/contact`. Content lives in
+`src/data/legal.ts`; the shell is `src/components/legal/LegalPage.tsx`. `SiteFooter`
+links all eight from every route, including the portfolio.
+
+Razorpay's activation review asks for six pages — shipping, contact us, pricing, terms,
+privacy, cancellation/refunds. `/delivery` is the "shipping policy" (there is nothing to
+ship; saying so on a page is what gets the review past it).
+
+### No cookie banner, and that is the correct answer
+The site sets no cookies, loads no third-party script, embeds nothing, and self-hosts
+Inter at build time through `next/font` — so no visitor request reaches Google Fonts,
+which is the practice a German court found unlawful under the GDPR in 2022. With no
+storage on the device and no tracking, nothing triggers consent under the ePrivacy
+Directive, PECR or the DPDP Act. **A banner would be theatre.**
+
+`npm run check:privacy` re-verifies this against the production build and fails on
+third-party fonts, trackers, iframes, off-origin scripts or `document.cookie` writes.
+**If that check ever fails, `/cookies` has become a false statement — fix the page or
+revert the change.** Embedding Calendly rather than linking to it is the most likely way
+to break it.
+
+### The SEBI exposure — the biggest risk on this site
+`udgam-iitg-equity-research.pdf` is 20 pages of equity research carrying CMP and target
+prices for roughly nine named listed Indian securities, presented as a fund with a
+SEBI-style risk-o-meter and a "Chief Investment Officer" title for a fund that does not
+exist. It is real competition work, and its own last page says the author is not
+SEBI-registered and that it is an academic project.
+
+The website said none of that. Now: a notice above the decks in Chapter III, a line in
+the footer on every page, and `/disclaimer` in full. **What is still his decision** is
+whether to keep publishing price targets on named stocks at all while selling a paid
+service — SEBI spent 2024–25 acting against exactly the "education" framing, and the
+December 2025 Avadhut Sathe order is the one to read.
+
+### Third-party personal data
+- **Fixed.** A teammate's institute address `i24mayurij@iimidr.ac.in` was printed in a
+  footer on 25 pages across five decks. Because the decks are rasterised it was invisible
+  to text search and fully legible to readers. `scripts/redact-pdf.py` OCRs each page and
+  destroys the pixels — it rewrites the embedded JPEG rather than drawing a box over it,
+  so the address is not recoverable by extracting the image. Wired into
+  `prepare-assets.sh` so regenerating cannot bring it back, with a `--check` pass at the
+  end of the script.
+- **Fixed.** `public/img/work/udgam-result.jpg` was an Unstop leaderboard screenshot
+  carrying nine other competitors' names and institutions. Nothing referenced it, but
+  anything in `public/` is served, so it was reachable at a public URL. Removed, and
+  `img.py:work()` emptied so it is not regenerated.
+- **Left alone, deliberately — his call, per §14.** His own mobile number in
+  `harsh-aryan-cv.pdf`, and his institute address plus mobile inside the UDGAM deck's
+  disclaimer page. The redaction script has an explicit allowlist so it never touches
+  them.
+
+### Claims corrected
+- "CFA Level II candidate" → "Passed Level I of the CFA® Program" (see §6.7).
+- "A Bloomberg Terminal costs about $24,000 a year" → "tens of thousands of dollars a
+  year". The precise figure was unsourced and below Bloomberg's own published rate.
+- UDGAM "National Finalist · Rank 1" → "Joint top score of 9.5". The result sheet shows
+  **four teams tied at rank one**; "Rank 1" alone read as sole first place.
+- The institution marquee now carries a label. Unlabelled it read as a logo wall, i.e.
+  "these organisations endorse me" — one of them (Bloomberg) is a free online certificate.
+- **No fake reviews or testimonials were found.** There are none on the site, and none
+  should be added: a fabricated testimonial is a straightforward unfair trade practice
+  under the Consumer Protection Act, 2019.
+
+### Accessibility
+- `--fg-faint` measured **3.00:1** against the background and is used for every eyebrow,
+  caption, date and footer line on the site. Raised to 5.10:1. `npm run check:contrast`
+  reads the tokens straight out of `globals.css` and fails on any pairing below AA.
+- New `--line-strong` token at 3.22:1 for borders that are the only thing drawing the edge
+  of a control (WCAG 1.4.11). `--line` stays soft for decorative rules.
+- Anchor links moved focus nowhere: every `a[href^="#"]` is intercepted and
+  `preventDefault()`ed so Lenis can own the scroll, which cancels the browser's own focus
+  move. `SmoothScroll` now focuses the target explicitly. **This affected the skip link
+  and the entire chapter index.**
+- The skip link pointed at `#about`, an id that exists only on the portfolio — so on each
+  legal page the first thing a keyboard user reached was a link to nothing. Now `#top`,
+  which every route defines.
+- "Booking opens soon" was a `<div>` dressed as a button: it looked like a control and was
+  invisible to assistive technology. Now a real `<button disabled>`.
+- "Back to start" pointed at `href="#"`, which `SmoothScroll` explicitly ignores. Gone
+  with the old footer.
+- The institution marquee ran forever regardless of `prefers-reduced-motion` — the one
+  piece of motion ignoring ADR-6 — and painted four copies of the list, so a screen reader
+  read every institution four times. Now `aria-hidden` with one real list beside it, and
+  static under reduced motion.
+- `IncomeQualityChart` encoded average and median as two dots with neither number in text.
+  A visually-hidden data table now carries the same figures.
+
+**Known gap, honestly:** WCAG 2.2.2 (Pause, Stop, Hide) wants an on-page control to stop
+moving content, not only an OS setting. The marquee honours `prefers-reduced-motion` but
+has no visible pause button, because one would be out of register with the design. Adding
+it is a small change if he wants strict conformance.
 
 ---
 

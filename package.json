@@ -9,7 +9,11 @@
     "lint": "eslint",
     "verify:open": "playwright-cli open http://localhost:3000",
     "verify:shot": "playwright-cli screenshot",
-    "verify:scroll": "playwright-cli mousewheel 0 300"
+    "verify:scroll": "playwright-cli mousewheel 0 300",
+    "check:contrast": "python3 scripts/contrast-tokens.py",
+    "check:legal": "node scripts/check-legal.mjs",
+    "check:privacy": "node scripts/check-privacy-surface.mjs",
+    "check:pii": "python3 scripts/redact-pdf.py --check public/docs/*.pdf"
   },
   "dependencies": {
     "gsap": "^3.15.0",

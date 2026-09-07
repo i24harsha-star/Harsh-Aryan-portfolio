@@ -6,11 +6,13 @@ import Projects from "@/components/Projects";
 import CV from "@/components/CV";
 import Mentoring from "@/components/Mentoring";
 import Contact from "@/components/Contact";
+import SiteFooter from "@/components/SiteFooter";
 
 export default function Home() {
   return (
     <>
-      <main>
+      {/* id="top" is the skip link's destination and is present on every route. */}
+      <main id="top">
         <Hero />
         <About />
         <CV />
@@ -39,6 +41,12 @@ export default function Home() {
         aria-hidden
         className="pointer-events-none fixed inset-x-0 bottom-0 z-[55] h-24 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/85 to-transparent"
       />
+      {/* Lifted out of Contact.tsx. A <footer> nested inside a <section> is the
+          section's footer, not the page's, so assistive technology never
+          announced it as the site footer — and the policy links it now carries
+          have to be reachable from every page, not from one chapter. */}
+      <SiteFooter clearChapterNav />
+
       <ChapterNav />
     </>
   );

@@ -41,11 +41,17 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} no-js`}>
       <body>
         <SmoothScroll />
+        {/* Targets #top, which every route puts on its own <main>. It used to
+            point at #about — an id that exists on the portfolio and nowhere
+            else, so on each legal page the first thing a keyboard user reached
+            was a link to nothing. SmoothScroll moves focus to the target; a
+            fragment link cannot do it for itself here, because the scroll is
+            intercepted. */}
         <a
-          href="#about"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-white focus:px-4 focus:py-2 focus:text-black"
+          href="#top"
+          className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-[100] focus-visible:bg-white focus-visible:px-4 focus-visible:py-2 focus-visible:text-black"
         >
-          Skip to content
+          Skip to main content
         </a>
         {children}
       </body>

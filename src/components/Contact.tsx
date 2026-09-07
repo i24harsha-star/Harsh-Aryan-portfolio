@@ -57,8 +57,16 @@ export default function Contact() {
                     rel="noopener noreferrer"
                     className="group flex items-baseline justify-between border-b border-[var(--line-soft)] py-4 transition-colors duration-500 hover:border-white"
                   >
-                    <span className="text-base font-light">{s.label}</span>
-                    <span className="text-fg-faint transition-transform duration-500 group-hover:translate-x-1">
+                    <span className="text-base font-light">
+                      {s.label}
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </span>
+                    {/* The arrow is the visual cue for the same thing the
+                        sr-only text says, so it must not be announced twice. */}
+                    <span
+                      aria-hidden="true"
+                      className="text-fg-faint transition-transform duration-500 group-hover:translate-x-1"
+                    >
                       ↗
                     </span>
                   </a>
@@ -74,19 +82,10 @@ export default function Contact() {
         </div>
       </div>
 
-      <footer className="mt-24 border-t border-[var(--line-soft)]">
-        <div className="shell flex flex-wrap items-center justify-between gap-4 py-8">
-          <span className="text-[0.625rem] tracking-[0.16em] uppercase text-fg-faint">
-            © {new Date().getFullYear()} {site.name}
-          </span>
-          <a
-            href="#"
-            className="text-[0.625rem] tracking-[0.16em] uppercase text-fg-faint transition-colors duration-500 hover:text-fg"
-          >
-            Back to start
-          </a>
-        </div>
-      </footer>
+      {/* The footer used to live here. It moved to <SiteFooter /> in page.tsx:
+          nested inside this <section> it was the section's footer rather than
+          the page's, and its "Back to start" link pointed at href="#" — which
+          SmoothScroll explicitly ignores, so it went nowhere at all. */}
     </section>
   );
 }

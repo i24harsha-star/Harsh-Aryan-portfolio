@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import ChapterHead from "./ChapterHead";
 import { useGsapContext, gsap, EASE } from "@/lib/motion";
 import { mentoring, chapterMeta } from "@/data/content";
@@ -99,21 +100,51 @@ export default function Mentoring() {
               <hr className="rule my-8" />
 
               {paymentUrl ? (
-                <a
-                  href={paymentUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full rounded-full bg-white px-6 py-4 text-center text-[0.625rem] font-medium tracking-[0.18em] uppercase text-black transition-opacity duration-500 hover:opacity-85"
-                >
-                  Pay ₹499 & book
-                </a>
+                <>
+                  {/* The label says the amount and both things that happen, so it
+                      still makes sense read on its own out of context — which is
+                      how a screen reader's list of links presents it. */}
+                  <a
+                    href={paymentUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-describedby="pay-consent"
+                    className="block w-full rounded-full bg-white px-6 py-4 text-center text-[0.625rem] font-medium tracking-[0.18em] uppercase text-black transition-opacity duration-500 hover:opacity-85"
+                  >
+                    Pay ₹{mentoring.price} and book a session
+                    <span className="sr-only"> (opens Razorpay in a new tab)</span>
+                  </a>
+
+                  {/* Consent, at the point of collection rather than buried in a
+                      policy page. This is the only place on the site where a
+                      visitor hands over personal data, so it is the only place
+                      the notice belongs. */}
+                  <p id="pay-consent" className="mt-4 text-xs leading-relaxed text-fg-faint">
+                    Paying takes you to Razorpay, then to a scheduling page. Your name and
+                    email are used only to arrange and deliver the session — card details
+                    are entered on Razorpay and are never seen or stored here. By booking
+                    you agree to the <Link href="/terms" className="underline underline-offset-4 hover:text-fg">Terms</Link>,{" "}
+                    the <Link href="/refunds" className="underline underline-offset-4 hover:text-fg">Refund Policy</Link>{" "}
+                    and the <Link href="/privacy" className="underline underline-offset-4 hover:text-fg">Privacy Policy</Link>.
+                  </p>
+                </>
               ) : (
                 <div>
-                  <div className="w-full cursor-not-allowed rounded-full border border-[var(--line-soft)] px-6 py-4 text-center text-[0.625rem] font-medium tracking-[0.18em] uppercase text-fg-faint">
+                  {/* A real disabled button, not a div dressed as one. As a div it
+                      looked like a control to a sighted reader while being
+                      invisible to assistive technology, which had no way to learn
+                      that booking exists but is switched off. */}
+                  <button
+                    type="button"
+                    disabled
+                    aria-describedby="booking-status"
+                    className="w-full cursor-not-allowed rounded-full border border-[var(--line-soft)] px-6 py-4 text-center text-[0.625rem] font-medium tracking-[0.18em] uppercase text-fg-faint"
+                  >
                     Booking opens soon
-                  </div>
-                  <p className="mt-4 text-center text-xs leading-relaxed text-fg-faint">
-                    Payments aren&rsquo;t live yet. In the meantime, reach me at{" "}
+                  </button>
+                  <p id="booking-status" className="mt-4 text-center text-xs leading-relaxed text-fg-faint">
+                    Payments aren&rsquo;t live yet, so nothing can be bought here today. In
+                    the meantime, reach me at{" "}
                     <a href="#contact" className="underline underline-offset-4 hover:text-fg">
                       the contact section
                     </a>
@@ -123,8 +154,29 @@ export default function Mentoring() {
               )}
 
               <p className="mt-8 text-xs leading-relaxed text-fg-faint">
-                {mentoring.disclaimer}
+                {mentoring.disclaimer}{" "}
+                <Link href="/disclaimer" className="underline underline-offset-4 hover:text-fg">
+                  Read the full disclaimer
+                </Link>
+                .
               </p>
+
+              <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 border-t border-[var(--line-soft)] pt-6 text-[0.625rem] tracking-[0.16em] uppercase text-fg-faint">
+                {[
+                  { href: "/pricing", label: "Pricing" },
+                  { href: "/refunds", label: "Refunds" },
+                  { href: "/terms", label: "Terms" },
+                ].map((l) => (
+                  <li key={l.href}>
+                    <Link
+                      href={l.href}
+                      className="underline decoration-[var(--line-strong)] underline-offset-4 transition-colors duration-500 hover:text-fg"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

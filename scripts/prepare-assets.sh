@@ -17,7 +17,7 @@ IMG="$ROOT/public/img"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
-mkdir -p "$DOCS" "$IMG/covers" "$IMG/photos" "$IMG/work"
+mkdir -p "$DOCS" "$IMG/covers" "$IMG/photos"
 
 say() { printf '\033[1m%s\033[0m\n' "$*"; }
 
@@ -70,6 +70,25 @@ for slug in case-chronicles-iiti case-o-nova-iimb casecon-abv-iiitm \
     mv "$TMP/$slug.pdf" "$DOCS/$slug.pdf"
   fi
 done
+
+# ---------------------------------------------------------------------------
+# 1c. Strip other people's contact details out of the published PDFs
+#
+# The team slide template printed BOTH teammates' institute email addresses in a
+# page footer across five of the decks. Harsh's own address is his to publish;
+# Mayuri's is not his to publish, and the decks are rasterised, so the address is
+# invisible to text search while being perfectly readable to anyone who opens the
+# file — and to anyone running OCR at scale to harvest addresses.
+#
+# This runs AFTER the flatten step above, because flattening rewrites every page
+# image and would otherwise reinstate the address it had just removed.
+#
+# It is not optional and it is not allowed to fail quietly: if the redaction
+# tooling is missing, the script stops here rather than publishing the address.
+# See scripts/redact-pdf.py for what it removes and what it deliberately leaves.
+# ---------------------------------------------------------------------------
+say "→ removing third-party contact details"
+/opt/anaconda3/bin/python3 "$ROOT/scripts/redact-pdf.py" "$DOCS"/*.pdf
 
 # ---------------------------------------------------------------------------
 # 2. Deck covers — render page 1 of each PDF
@@ -145,5 +164,11 @@ say "→ processing event photos"
 # ---------------------------------------------------------------------------
 say "→ processing work artefacts"
 /opt/anaconda3/bin/python3 "$ROOT/scripts/img.py" work "$SRC" "$IMG/work"
+
+# ---------------------------------------------------------------------------
+# 6. Final check — nothing in public/ should carry someone else's email
+# ---------------------------------------------------------------------------
+say "→ verifying no third-party contact details remain"
+/opt/anaconda3/bin/python3 "$ROOT/scripts/redact-pdf.py" --check "$DOCS"/*.pdf
 
 say "done."

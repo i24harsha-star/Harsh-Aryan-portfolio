@@ -60,7 +60,13 @@ export const about = {
   ],
   facts: [
     { label: "Programme", value: "IPM — BA (Foundations of Management), IIM Indore · May 2027" },
-    { label: "Charter progress", value: "CFA Level II candidate · Level I passed 2026" },
+    // CFA Institute's trademark guidance is explicit that passing Level I does
+    // NOT confer "Level II candidate" status — only registering for Level II
+    // does — and that progress must be described factually, without implying a
+    // partial designation. His CV currently uses the candidate phrasing; this
+    // wording is true either way, so it is the safe one to publish until he
+    // confirms he is registered. See handoff.md §6.
+    { label: "Charter progress", value: "Passed Level I of the CFA® Program (2026)" },
     { label: "Focus", value: "Investment banking · Equity research · PE/VC · Wealth management" },
     { label: "Based in", value: "Indore, Madhya Pradesh, India" },
   ],
@@ -86,8 +92,11 @@ export const competitions = {
       event: "Equity Research Challenge",
       host: "UDGAM’26 · IIT Guwahati",
       date: "January 2026",
-      result: "National Finalist · Rank 1",
-      resultNote: "Score 9.5 — shortlisted from 1,295+ registrations",
+      result: "National Finalist",
+      // The result sheet in Website Assets shows four teams tied on 9.5 at rank
+      // one in the report round. "Rank 1" on its own read as sole first place;
+      // this says what the sheet says.
+      resultNote: "Joint top score of 9.5 in the report round · shortlisted from 1,295+ registrations",
       summary:
         "Designed a GARP-based small and mid-cap hybrid equity fund using a top-down framework: macro and sectoral outlook, then growth, valuation, profitability and cash-flow-quality filters. Dynacons Systems & Solutions was taken through full fundamental analysis.",
       doc: "/docs/udgam-iitg-equity-research.pdf",
@@ -168,7 +177,11 @@ export const projects = {
     period: "June – August 2026",
     href: "https://aegis-os-silk.vercel.app",
     summary:
-      "A Bloomberg Terminal costs about $24,000 a year, and it is a large part of why analysts inside big firms see what matters before everyone else. I wanted to read markets that way without the terminal, so I built my own.",
+      // Was "about $24,000 a year" — a precise figure about someone else's
+      // pricing, unsourced and below Bloomberg's own published rate. The point
+      // being made does not need the number to be exact, so it no longer
+      // pretends to be.
+      "A Bloomberg Terminal costs tens of thousands of dollars a year, and it is a large part of why analysts inside big firms see what matters before everyone else. I wanted to read markets that way without the terminal, so I built my own.",
     modules: [
       "Prioritised intelligence feed",
       "Macro hub — yield curves, real rates, sovereign yields",
@@ -271,8 +284,9 @@ export const cv = {
     },
     {
       place: "CFA Institute",
-      detail: "Level II candidate · Level I passed, May 2026",
-      period: "May 2027",
+      // Same reasoning as about.facts above.
+      detail: "Passed Level I of the CFA® Program, May 2026",
+      period: "May 2026",
     },
   ],
 

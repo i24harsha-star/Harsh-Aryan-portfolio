@@ -55,6 +55,7 @@ export default function Projects() {
                 className="mt-8 inline-block rounded-full border border-line px-6 py-3 text-[0.625rem] font-medium tracking-[0.18em] uppercase transition-colors duration-500 hover:bg-white hover:text-black"
               >
                 Open the platform
+                <span className="sr-only"> {aegis.name} (opens in a new tab)</span>
               </a>
 
               <ul className="mt-10 flex flex-wrap gap-2">
@@ -120,11 +121,16 @@ export default function Projects() {
                 <p className="mt-6 border-l border-line pl-5 text-sm font-light italic leading-relaxed text-fg-muted">
                   {a.finding}
                 </p>
+                {/* "Workbook (XLSX)" alone does not say which workbook — and a
+                    screen reader listing the page's links shows exactly that,
+                    twice, once per analysis. The name goes in the accessible
+                    label without changing what is printed. */}
                 <a
                   href={a.doc}
                   className="mt-7 inline-block border-b border-line pb-1 text-[0.6875rem] tracking-[0.16em] uppercase transition-colors duration-500 hover:border-[var(--accent)] hover:text-[var(--accent)]"
                 >
                   {a.docLabel}
+                  <span className="sr-only"> — {a.name}, {a.subtitle} (downloads a spreadsheet)</span>
                 </a>
               </div>
 
@@ -155,6 +161,12 @@ export default function Projects() {
                     <div className="relative aspect-[4/3] overflow-hidden bg-bg-raised">
                       <Image
                         src={w.cover}
+                        /* Deliberately empty. The cover is the first page of the
+                           document whose title, subtitle and summary are printed
+                           immediately below it inside the same link — describing
+                           it here would make a screen reader announce the same
+                           thing twice. An empty alt is the correct alt for an
+                           image that adds nothing its neighbours do not say. */
                         alt=""
                         fill
                         sizes="(max-width: 640px) 100vw, 33vw"
@@ -168,6 +180,10 @@ export default function Projects() {
                   )}
                   <h4 className="mt-5 text-base font-light leading-snug transition-colors duration-500 group-hover:text-white">
                     {w.name}
+                    <span className="sr-only">
+                      {" "}
+                      ({"doc" in w ? "PDF" : "external site"}, opens in a new tab)
+                    </span>
                   </h4>
                   <p className="mt-1.5 text-xs text-fg-faint">{w.subtitle}</p>
                   <p className="body mt-3">{w.summary}</p>

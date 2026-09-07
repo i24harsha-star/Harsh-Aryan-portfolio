@@ -110,7 +110,10 @@ export default function Hero() {
           <div className="hero-portrait absolute inset-0 opacity-0">
             <Image
               src="/img/bg-hero-2400.jpg"
-              alt=""
+              /* Not decorative: this is the portrait the opening resolves onto,
+                 and the only thing a reader who cannot see it would otherwise
+                 know is that a name appeared over nothing. */
+              alt="Harsh Aryan standing on an open lawn, photographed from a distance"
               fill
               priority
               sizes="100vw"

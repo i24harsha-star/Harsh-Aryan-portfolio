@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -33,6 +33,34 @@ export function prefersReducedMotion() {
     return true;
   }
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function subscribeReducedMotion(onChange: () => void) {
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+
+/**
+ * Reactive version of `prefersReducedMotion()` for render decisions.
+ *
+ * The plain function reads `window`, so it cannot be called during render
+ * without a hydration mismatch. This returns false on the server and during
+ * hydration — matching the HTML that was sent — then re-renders once the media
+ * query has been read, and again if the reader changes the setting while the
+ * page is open.
+ */
+export function useReducedMotion() {
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    // Client snapshot. Reads the media query — and, in development, the
+    // ?static=1 escape hatch — through the same function the GSAP layer uses,
+    // so the two can never disagree about whether motion is wanted.
+    prefersReducedMotion,
+    // Server snapshot: false, matching the HTML that is actually sent. React
+    // re-renders after hydration if the reader's real setting differs.
+    () => false
+  );
 }
 
 /**

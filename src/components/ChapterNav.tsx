@@ -86,7 +86,10 @@ export default function ChapterNav() {
             data-active={on}
             onMouseEnter={() => setHovered(c.id)}
             onMouseLeave={() => setHovered(null)}
-            aria-current={on ? "true" : undefined}
+            /* "location" is the right token for the section of a page you are
+               currently in; "true" is the generic fallback and reads as "current
+               item" without saying current what. */
+            aria-current={on ? "location" : undefined}
             /* The link is the hit area — 44px on mobile, 28px on desktop, per
                the ≥24px / ≥44px touch-target rule. The visual strip stays
                1.45rem and sits at the bottom of it, so the row still reads as
