@@ -104,7 +104,7 @@ Twelve commits, all merged to `main`:
 - `8f44210` Mentoring: payment first, then booking
 - `5d7c859` The Record: rebuilt from the rewritten resume
 - `1bd4c38` Add engineering handoff document
-- `df4ffde` Adani Power project + resume refresh ← HEAD
+- `1c32be9` Adani Power project + resume refresh
 
 ---
 
