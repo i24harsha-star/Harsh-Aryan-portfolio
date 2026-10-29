@@ -162,6 +162,93 @@ export const projects = {
   title: ["Built to", "understand"],
   standfirst:
     "Every one of these started as a question I couldn’t answer by reading. The fastest way to find out where your reasoning is wrong is to build the thing and watch it fail.",
+  /**
+   * Adani Power — the newest project, and the one that sits first because it is
+   * the most complete piece of modelling work on the site.
+   *
+   * `chain` is the model's own architecture, stage by stage. ValuationChain
+   * draws it; the grid underneath lists what each stage actually contains. Both
+   * read from this one array, so the diagram can never drift from the copy.
+   *
+   * Deliberately no numbers: no price target, no valuation range, no multiples.
+   * None of the model's outputs have been supplied, and a plausible-looking
+   * figure on a finance portfolio is worse than none at all.
+   */
+  adani: {
+    name: "Adani Power",
+    tagline: "Financial Modelling & DCF Valuation",
+    kind: "Personal project",
+    period: "August – September 2026",
+    summary:
+      "An end-to-end model of an Indian thermal power producer, built to carry one business the whole way — plant load factor and tariff assumptions at one end, an equity value at the other.",
+    note:
+      "What I wanted from it was never a price target. It was to watch a single operating assumption travel through three statements, into cash flow, and out the other side as what the equity is worth — because that journey is where reasoning either holds or breaks.",
+    chain: [
+      {
+        numeral: "01",
+        label: ["Operating", "drivers"],
+        items: [
+          "Capacity additions and commissioning",
+          "Plant availability and PLF",
+          "PPA versus merchant generation",
+          "Tariff assumptions",
+        ],
+      },
+      {
+        numeral: "02",
+        label: ["Three", "statements"],
+        items: [
+          "Ten years of historical income statement, balance sheet and cash flow",
+          "Revenue, EBITDA, EBIT and net income forecast",
+          "CAPEX and working capital",
+          "Debt schedules",
+        ],
+      },
+      {
+        numeral: "03",
+        label: ["Free", "cash flow"],
+        items: [
+          "FCFF build",
+          "WACC, with a regression-based beta from historical market data",
+          "Reinvestment rate and intrinsic growth",
+          "Ratio and common-size analysis",
+        ],
+      },
+      {
+        numeral: "04",
+        label: ["Three", "approaches"],
+        items: [
+          "FCFF-based DCF, with terminal value and sensitivity analysis",
+          "Comparable companies on EV/Revenue, EV/EBITDA and P/E",
+          "Market-based valuation",
+        ],
+      },
+      {
+        numeral: "05",
+        label: ["Football", "field"],
+        items: [
+          "The three approaches set side by side as one valuation range",
+          "Base, best and worst cases across operating and macro assumptions",
+          "Historical and Monte Carlo Value-at-Risk for the downside",
+        ],
+      },
+    ],
+    methods: [
+      "FCFF DCF",
+      "Terminal value",
+      "Sensitivity analysis",
+      "Regression beta",
+      "WACC",
+      "Comparable companies",
+      "Football field",
+      "Scenario analysis",
+      "Monte Carlo VaR",
+      "Common-size analysis",
+    ],
+    // NEEDS INPUT — the workbook itself is not in Website Assets, so there is
+    // nothing to link. Drop the .xlsx in and this becomes a download.
+    doc: null,
+  },
   aegis: {
     name: "AEGIS.os",
     tagline: "AI Financial Intelligence Platform",
@@ -293,7 +380,7 @@ export const cv = {
       items: [
         {
           place: "Access Livelihoods",
-          role: "Intern — Development Finance",
+          role: "Development Finance — Intern",
           where: "Hyderabad, India",
           period: "April – June 2026",
           points: [
@@ -310,7 +397,7 @@ export const cv = {
           place: "434 VC",
           role: "Investment Analyst — Live Project",
           where: "New York, United States",
-          period: "August 2026 – Present",
+          period: "August 2026 – September 2026",
           points: [
             "Conducted market research and competitive analysis across venture capital, AI, technology and funding markets.",
             "Supported startup screening, due diligence, investment notes and deal-pipeline research across emerging opportunities.",

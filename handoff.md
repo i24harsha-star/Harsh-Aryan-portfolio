@@ -102,7 +102,9 @@ Twelve commits, all merged to `main`:
 - `27bcfc3` Chapter reorder + updated resume + case thumbnails
 - `f1b6f66` Contact: drop counter row, fix two overlaps
 - `8f44210` Mentoring: payment first, then booking
-- `5d7c859` The Record: rebuilt from the rewritten resume ← HEAD
+- `5d7c859` The Record: rebuilt from the rewritten resume
+- `1bd4c38` Add engineering handoff document
+- `df4ffde` Adani Power project + resume refresh ← HEAD
 
 ---
 
@@ -154,9 +156,20 @@ build, so an import should succeed with all defaults.
    because headless Chromium has no real compositor. **He has never confirmed whether it
    is fixed.** Ask.
 
-3. **`434 VC` is only in Chapter II.** Investment Analyst at a New York VC, Aug 2026–present,
+3. **`434 VC` is only in Chapter II.** Investment Analyst at a New York VC, Aug–Sep 2026,
    is arguably the strongest item on the site but appears only in the CV record. It probably
-   deserves a proper block in Chapter IV. Raised, not yet decided.
+   deserves a proper block in Chapter IV. Raised, not yet decided. (The engagement has now
+   ended — the resume dates it August–September 2026, not "Present".)
+
+3a. **Adani Power has no deliverable to link.** The project block is live at the top of
+   Chapter IV, but `projects.adani.doc` is `null` because the workbook is not in
+   `Website Assets`. Drop the `.xlsx` in, add a `copy_doc` line to `prepare-assets.sh`, set
+   `doc`, and render a download link the way `analyses` does.
+
+3b. **Adani Power is not in The Record.** Chapter II mirrors the downloadable CV exactly,
+   and the one-page resume does not list this project. Deliberate — the page and the PDF a
+   visitor downloads must not disagree. If he adds it to the resume, add it to `cv.experience`
+   under `Projects` at the same time.
 
 4. **Earnings Quality / Monte Carlo dropped from his resume** but still shown as Chapter IV
    showcases with live charts. Left deliberately (a showcase may hold more than a one-page

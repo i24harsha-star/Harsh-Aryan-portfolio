@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import ChapterHead from "./ChapterHead";
+import ValuationChain from "./ValuationChain";
 import MonteCarloChart from "./MonteCarloChart";
 import IncomeQualityChart from "./IncomeQualityChart";
 import { useGsapContext, gsap, EASE } from "@/lib/motion";
@@ -22,7 +23,7 @@ export default function Projects() {
     });
   });
 
-  const { aegis, analyses, writing } = projects;
+  const { adani, aegis, analyses, writing } = projects;
 
   return (
     <section
@@ -39,9 +40,65 @@ export default function Projects() {
         />
 
         {/* ---------------------------------------------------------------- */}
-        {/* AEGIS.os — the anchor project                                    */}
+        {/* Adani Power — the newest and most complete modelling work, so it   */}
+        {/* opens the chapter.                                                */}
         {/* ---------------------------------------------------------------- */}
         <div className="mt-20 border-t border-line pt-12 lg:mt-28">
+          <div data-block className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-5">
+              <div className="eyebrow mb-4">
+                {adani.period} · {adani.kind}
+              </div>
+              <h3 className="display-sm">{adani.name}</h3>
+              <p className="mt-3 text-sm tracking-[0.02em] text-fg-muted">{adani.tagline}</p>
+
+              <ul className="mt-9 flex flex-wrap gap-2">
+                {adani.methods.map((m) => (
+                  <li
+                    key={m}
+                    className="rounded-full border border-[var(--line-soft)] px-3 py-1.5 text-[0.5625rem] tracking-[0.14em] uppercase text-fg-faint"
+                  >
+                    {m}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="lg:col-span-7">
+              <p className="lede">{adani.summary}</p>
+              <p className="mt-7 border-l border-line pl-5 text-sm font-light italic leading-relaxed text-fg-muted">
+                {adani.note}
+              </p>
+            </div>
+          </div>
+
+          <div data-block className="mt-16 border-t border-[var(--line-soft)] pt-12">
+            <div className="eyebrow mb-10">How the model is built</div>
+            <ValuationChain />
+          </div>
+
+          {/* The diagram carries the architecture; these rows carry the detail
+              that will not fit inside a node. */}
+          <dl data-block className="mt-16">
+            {adani.chain.map((stage) => (
+              <div
+                key={stage.numeral}
+                className="grid gap-x-8 gap-y-2 border-t border-[var(--line-soft)] py-5 sm:grid-cols-[2.5rem_minmax(0,9rem)_1fr]"
+              >
+                <span className="mono text-xs text-fg-faint">{stage.numeral}</span>
+                <dt className="text-sm font-light">{stage.label.join(" ")}</dt>
+                <dd className="text-sm font-light leading-relaxed text-fg-muted">
+                  {stage.items.join(" · ")}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        {/* ---------------------------------------------------------------- */}
+        {/* AEGIS.os — the anchor project                                    */}
+        {/* ---------------------------------------------------------------- */}
+        <div className="mt-24 border-t border-line pt-12 lg:mt-32">
           <div data-block className="grid gap-10 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-5">
               <div className="eyebrow mb-4">{aegis.period}</div>
