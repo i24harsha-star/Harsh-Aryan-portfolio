@@ -11,6 +11,9 @@
 set -euo pipefail
 
 SRC="/Users/harsharyan/Files/Work/Projects/Portfolio/Website Assets"
+# The Adani Power model is the one publishable asset that lives outside
+# "Website Assets" — it sits with his other modelling work.
+FM="/Users/harsharyan/Files/Work/Financial Modelling Resources"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DOCS="$ROOT/public/docs"
 IMG="$ROOT/public/img"
@@ -49,6 +52,14 @@ copy_doc "Harsh Aryan_Resume.pdf" "harsh-aryan-cv.pdf"
 copy_doc "Income Quality of Large Cap Chemicals & Petrochemicals Companies/Accessing the Income Quality of Large Cap Chemicals & Petrochemicals Company.xlsx" "income-quality-chemicals.xlsx"
 copy_doc "Monte Carlo simulation/Monte Carlo Simulation.xlsx" "monte-carlo-nifty50.xlsx"
 copy_doc "Equity Research | IITG/Company Data/Financial Modelling/Dynacon System & Solutions FSA.xlsx" "dynacons-fsa-model.xlsx"
+
+# Not under $SRC, so copy_doc cannot reach it.
+if [ -f "$FM/Adani Power FM/Adani Power - Practice FM.xlsx" ]; then
+  cp "$FM/Adani Power FM/Adani Power - Practice FM.xlsx" "$DOCS/adani-power-dcf-model.xlsx"
+  echo "   adani-power-dcf-model.xlsx"
+else
+  echo "   !! missing: Adani Power - Practice FM.xlsx" >&2
+fi
 
 # ---------------------------------------------------------------------------
 # 1b. Shrink the design decks for the web

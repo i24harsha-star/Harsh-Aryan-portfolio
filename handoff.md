@@ -161,10 +161,22 @@ build, so an import should succeed with all defaults.
    deserves a proper block in Chapter IV. Raised, not yet decided. (The engagement has now
    ended — the resume dates it August–September 2026, not "Present".)
 
-3a. **Adani Power has no deliverable to link.** The project block is live at the top of
-   Chapter IV, but `projects.adani.doc` is `null` because the workbook is not in
-   `Website Assets`. Drop the `.xlsx` in, add a `copy_doc` line to `prepare-assets.sh`, set
-   `doc`, and render a download link the way `analyses` does.
+3a. ~~**Adani Power has no deliverable to link.**~~ **Resolved 2026-10-30.** He supplied the
+   workbook (`Financial Modelling Resources/Adani Power FM/Adani Power - Practice FM.xlsx`,
+   27 sheets, 678 KB). It is published at `/docs/adani-power-dcf-model.xlsx` and copied by
+   `prepare-assets.sh` — note it is the one publishable asset that lives OUTSIDE
+   `Website Assets`, so it uses the `$FM` path, not `copy_doc`.
+
+3c. **Every Adani valuation figure on the site is read from that workbook.** Do not restate,
+   re-round or "update" any of them without re-reading the file, and do not extrapolate new
+   ones. Provenance: `DCF` (₹465.50 base, WACC 9.15%, terminal growth 4.5%, PV of FCFF
+   ₹36,672 cr, PV of TV ₹908,771 cr, EV ₹945,443 cr, price ₹202.71) · `Football Field` (the
+   five bars, verbatim) · `WACC` + `Beta` (raw levered beta 1.25646 on R² 0.1085 over 260
+   weekly observations, Blume-adjusted 1.19235, bottom-up re-levered 0.6879, Ke 11.12%) ·
+   `Comp Valuation` (implied ₹54.80 / ₹101.80 / ₹182.31; APL at 18.7x EV/EBITDA vs 10.4x
+   peer median) · `Intrinsic Growth` (ROIC 9.1% → 8.3% → 16.6%) · `VaR` (95% weekly −7.22%
+   historical, −10.15% Monte Carlo). The model is dated 25 Sep 2026 and the site says so.
+   It carries its own disclaimer on the Cover sheet; the site repeats one.
 
 3b. **Adani Power is not in The Record.** Chapter II mirrors the downloadable CV exactly,
    and the one-page resume does not list this project. Deliberate — the page and the PDF a

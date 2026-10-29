@@ -3,6 +3,7 @@
 import Image from "next/image";
 import ChapterHead from "./ChapterHead";
 import ValuationChain from "./ValuationChain";
+import FootballField from "./FootballField";
 import MonteCarloChart from "./MonteCarloChart";
 import IncomeQualityChart from "./IncomeQualityChart";
 import { useGsapContext, gsap, EASE } from "@/lib/motion";
@@ -62,6 +63,13 @@ export default function Projects() {
                   </li>
                 ))}
               </ul>
+
+              <a
+                href={adani.doc}
+                className="mt-9 inline-block border-b border-line pb-1 text-[0.6875rem] tracking-[0.16em] uppercase transition-colors duration-500 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+              >
+                {adani.docLabel}
+              </a>
             </div>
 
             <div className="lg:col-span-7">
@@ -93,6 +101,48 @@ export default function Projects() {
               </div>
             ))}
           </dl>
+
+          {/* -------------------------------------------------------------- */}
+          {/* What the model concluded                                        */}
+          {/* -------------------------------------------------------------- */}
+          <div data-block className="mt-20 border-t border-[var(--line-soft)] pt-12">
+            <div className="eyebrow mb-8">The valuation</div>
+            <p className="lede max-w-[46rem]">{adani.valuation.standfirst}</p>
+
+            <dl className="mt-14 grid grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-4">
+              {adani.valuation.figures.map((f) => (
+                <div key={f.label}>
+                  <dt className="eyebrow mb-2">{f.label}</dt>
+                  <dd className="mono text-[clamp(1.5rem,2.6vw,2.25rem)] font-extralight">
+                    {f.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div data-block className="mt-16">
+            <div className="eyebrow mb-10">Football field — per share</div>
+            <FootballField />
+          </div>
+
+          <div data-block className="mt-16 grid gap-x-14 gap-y-10 sm:grid-cols-2">
+            {adani.valuation.findings.map((f) => (
+              <div key={f.head}>
+                <h4 className="mb-3 text-sm font-normal leading-snug">{f.head}</h4>
+                <p className="body">{f.body}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* The wrapper carries data-block, not the paragraph: the reveal
+              animates a block's element children, and a <p> of bare text has
+              none — GSAP warns about the empty target and nothing fades in. */}
+          <div data-block className="mt-14">
+            <p className="max-w-[42rem] text-xs leading-relaxed text-fg-faint">
+              {adani.disclaimer}
+            </p>
+          </div>
         </div>
 
         {/* ---------------------------------------------------------------- */}

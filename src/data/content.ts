@@ -233,6 +233,65 @@ export const projects = {
         ],
       },
     ],
+    /**
+     * Valuation outputs, read directly out of the workbook (Cover sheet dates it
+     * 25 September 2026). Every figure here is the model's own — nothing is
+     * rounded into a nicer story and nothing is inferred.
+     *
+     * `field` is the Football Field sheet's own data table; `figures` and
+     * `findings` are read off DCF, WACC, Beta, Comp Valuation, Intrinsic Growth
+     * and VaR. See handoff.md §9 for where each one comes from.
+     */
+    valuation: {
+      asOf: "25 September 2026",
+      marketPrice: 202.71,
+      standfirst:
+        "The model lands on ₹465.50 a share against a market price of ₹202.71 — a 56% discount. The more useful part is why, and what has to be true for it to hold.",
+      figures: [
+        { value: "₹465.50", label: "DCF base case, per share" },
+        { value: "₹202.71", label: "Market price, 25 Sep 2026" },
+        { value: "9.15%", label: "WACC, bottom-up beta" },
+        { value: "96%", label: "Of value beyond the forecast" },
+      ],
+      // Football Field sheet, verbatim. axisMax is rounded up from the highest
+      // bar so the chart has a little air at the right.
+      axisMax: 1300,
+      ticks: [0, 250, 500, 750, 1000, 1250],
+      field: [
+        { label: "52-week range", low: 128.1, high: 254.2, kind: "market" },
+        { label: "Comparable companies", low: 54.8005, high: 182.3104, kind: "comps" },
+        { label: "DCF — worst case", low: 181.3642, high: 245.1877, kind: "dcf" },
+        { label: "DCF — base case", low: 382.0634, high: 594.6745, kind: "base" },
+        { label: "DCF — best case", low: 611.7204, high: 1243.5, kind: "dcf" },
+      ],
+      findings: [
+        {
+          head: "Ninety-six per cent of the value sits past the forecast",
+          body:
+            "The present value of the terminal value is ₹908,771 crore of an enterprise value of ₹945,443 crore. Six explicit forecast years contribute the other 3.9% — and three of them are negative, because capex runs ahead of operating cash flow until 2030. This is not a cash-generating business valued on its cash flow. It is a build-out valued on what it becomes once the build-out ends.",
+        },
+        {
+          head: "The largest lever is a methodology choice, not a view on power",
+          body:
+            "A five-year weekly regression against the NIFTY gives a beta of 1.26 — on an R² of 0.11, so the index explains about a ninth of how this stock moves. Taking the peer median unlevered beta instead and re-levering it to target gearing gives 0.69, and moves the cost of equity from 14.5% to 11.1%. No tariff or plant-load assumption in the model shifts the answer as far as that one decision does.",
+        },
+        {
+          head: "The DCF and the comparables disagree, and that is the finding",
+          body:
+            "On EV/EBITDA the peers imply ₹102 a share and on P/E ₹182 — both under the ₹202.71 market price, while the DCF says ₹465.50. Adani Power trades at 18.7× EV/EBITDA against a peer median of 10.4×. The market is already paying for growth the peer set does not have; the DCF is pricing capacity that does not exist yet. Both readings can be correct, and a valuation that reported only one of them would be hiding the argument.",
+        },
+        {
+          head: "The whole thesis is one crossover",
+          body:
+            "Return on invested capital sits at or below the 9.15% cost of capital from 2026 through 2029 — 9.1%, 8.8%, 8.6%, 8.3% — and then crosses to 10.2%, 13.9% and 16.6%. Capacity roughly doubles from 21.1 GW to 41.9 GW across the same window. Everything the valuation claims rests on that build completing and that crossing happening on schedule.",
+        },
+        {
+          head: "Risk the discount rate cannot see",
+          body:
+            "Weekly return volatility of 6.9% annualises near 50%, and a 10,000-path simulation puts the 95% one-week VaR at −10.1% against −7.2% on the historical series. A beta of 0.69 prices this as a below-market-risk asset. The VaR sheet ends up documenting the limitation of the model's own discount rate.",
+        },
+      ],
+    },
     methods: [
       "FCFF DCF",
       "Terminal value",
@@ -245,9 +304,10 @@ export const projects = {
       "Monte Carlo VaR",
       "Common-size analysis",
     ],
-    // NEEDS INPUT — the workbook itself is not in Website Assets, so there is
-    // nothing to link. Drop the .xlsx in and this becomes a download.
-    doc: null,
+    doc: "/docs/adani-power-dcf-model.xlsx",
+    docLabel: "Full model (XLSX)",
+    disclaimer:
+      "An educational practice model, not a recommendation to buy, hold or sell any security. The figures are the model's own outputs as at 25 September 2026 and have not been updated since.",
   },
   aegis: {
     name: "AEGIS.os",
